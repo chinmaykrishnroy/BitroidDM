@@ -163,7 +163,7 @@ except ApiError as e:
     print(f"Error initializing Snowfl: {e}")
 
 try:
-    query = "harry potter"
+    query = input("Query: ")
     sort = "MAX_SEED"
     include_nsfw = False
     results = snowfl.parse(query, sort=sort, include_nsfw=include_nsfw)
