@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>loader-dark.gif</file>
+    <file>loader-transparent.svg</file>
+    <file>loader-dark.svg</file>
     <file>icons/activity.svg</file>
     <file>icons/airplay.svg</file>
     <file>icons/alert-circle.svg</file>
