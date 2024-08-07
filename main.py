@@ -1,7 +1,9 @@
-from interface import *
+import sys
+
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QTimer
 from PySide6.QtWidgets import QGraphicsOpacityEffect
-import sys
+
+from interface import *
 
 
 class MainWindow(QMainWindow):

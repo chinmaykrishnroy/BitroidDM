@@ -1,9 +1,10 @@
-from pprint import pprint
-import os
 import json
 import logging
-from typing import Any, Dict, Optional
+import os
 import re
+from pprint import pprint
+from typing import Any, Dict, Optional
+
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -20,8 +21,8 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Custom exceptions
 
+# Custom exceptions
 
 class ApiError(Exception):
     def __init__(self, message="API error occurred"):
@@ -36,8 +37,8 @@ class FetchError(Exception):
     def __str__(self):
         return f"{self.__class__.__name__}: {self.args[0]} (Status Code: {self.status_code})"
 
-# Utility functions
 
+# Utility functions
 
 def requests_retry_session(retries=3, backoff_factor=0.3, status_forcelist=(500, 502, 504)):
     session = requests.Session()
@@ -81,8 +82,8 @@ def get_api_key() -> str:
         logger.error("Unexpected error occurred", exc_info=e)
         raise
 
-# Main class
 
+# Main class
 
 class Snowfl:
     def __init__(self):
@@ -130,6 +131,7 @@ class Snowfl:
     def __repr__(self):
         return "Snowfl()"
 
+
 # Save Cache
 
 
@@ -148,6 +150,7 @@ def append_to_history(data: list[Dict[str, Any]], filename="searchhistory.json")
 
     with open(filename, 'w') as file:
         json.dump(history, file, indent=4)
+
 
 # Usage
 
