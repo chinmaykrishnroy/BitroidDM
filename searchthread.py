@@ -1,10 +1,10 @@
-import sys
 import json
-import os
 import logging
-from typing import Any, Dict, Optional
-from PyQt5.QtCore import QThread, pyqtSignal, QMutex
+import os
 import re
+from pprint import pprint
+from typing import Any, Dict, Optional
+from PySide6.QtCore import QThread, Signal, QMutex, QMutexLocker
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -17,11 +17,13 @@ REGEX_FOR_KEY = re.compile(r'findNextItem.*?"(.*?)"')
 REGEX_FOR_JS = re.compile(r'((?:b.min.js).*)(?=")')
 
 # Logging configuration
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
 # Custom exceptions
+
 class ApiError(Exception):
     def __init__(self, message="API error occurred"):
         super().__init__(message)
@@ -37,10 +39,11 @@ class FetchError(Exception):
 
 
 # Utility functions
+
 def requests_retry_session(retries=3, backoff_factor=0.3, status_forcelist=(500, 502, 504)):
     session = requests.Session()
-    retry = Retry(total=retries, read=retries, connect=retries, backoff_factor=backoff_factor,
-                  status_forcelist=status_forcelist)
+    retry = Retry(total=retries, read=retries, connect=retries,
+                  backoff_factor=backoff_factor, status_forcelist=status_forcelist)
     adapter = HTTPAdapter(max_retries=retry)
     session.mount('http://', adapter)
     session.mount('https://', adapter)
@@ -80,14 +83,20 @@ def get_api_key() -> str:
         raise
 
 
+# Main class
+
 class Snowfl:
     def __init__(self):
         self.api_key: Optional[str] = None
 
     def initialize(self):
-        self.api_key = get_api_key()
-        if self.api_key is None:
-            raise ApiError("Failed to obtain API key.")
+        try:
+            self.api_key = get_api_key()
+            if self.api_key is None:
+                raise ApiError("Failed to obtain API key.")
+        except (ApiError, FetchError) as e:
+            logger.error(f"Initialization failed: {e}")
+            raise
 
     def parse(self, query: str, sort: str = "NONE", include_nsfw: bool = False) -> Dict[str, Any]:
         if len(query) <= 2:
@@ -102,10 +111,11 @@ class Snowfl:
         res = session.get(url=url, headers=HEADERS)
 
         if res.status_code != 200:
-            raise FetchError(f"Failed to fetch data, HTTP status: {res.status_code}")
+            raise FetchError(f"Failed to fetch data, HTTP status: {res.status_code}", status_code=res.status_code)
 
         data = json.loads(res.text)
         return data
+
 
     @staticmethod
     def get_sort_url_segment(sort_key: str) -> str:
@@ -127,51 +137,63 @@ class Snowfl:
         return "Snowfl()"
 
 
-def append_to_history(data: list[Dict[str, Any]], filename="searchhistory.json"):
-    if os.path.exists(filename):
-        with open(filename, 'r') as file:
-            try:
-                history = json.load(file)
-            except json.decoder.JSONDecodeError:
-                print("Can't load history!")
-                history = []
-    else:
-        history = []
+class SearchThread(QThread):
+    search_result = Signal(int, list)  # Signal: emits 1 with results on success, 0 with empty list on failure
 
-    history.extend(data)
-
-    with open(filename, 'w') as file:
-        json.dump(history, file, indent=4)
-
-
-class SnowflThread(QThread):
-    result_signal = pyqtSignal(list)
-    log_signal = pyqtSignal(str)
-
-    def __init__(self, query: str, sort: str = "NONE", include_nsfw: bool = False):
+    def __init__(self):
         super().__init__()
+        self.snowfl = Snowfl()
+        self.mutex = QMutex()
+        self.query = ""
+        self.sort = "NONE"
+        self.include_nsfw = False
+        self._stop_flag = False
+
+    def run(self):
+        while not self._stop_flag:
+            with QMutexLocker(self.mutex):
+                if not self.query:
+                    self.search_result.emit(0, [])
+                    return
+                try:
+                    # Initialize API key before search
+                    self.snowfl.initialize()
+                    
+                    results = self.snowfl.parse(self.query, self.sort, self.include_nsfw)
+                    self.search_result.emit(1, results)
+                except Exception as e:
+                    print(f"Error occurred during search: {str(e)}")
+                    self.search_result.emit(0, [])
+                finally:
+                    self._stop_flag = True
+
+    def start_search(self, query: str, sort: str = "NONE", include_nsfw: bool = False):
+        if self.isRunning():
+            return
         self.query = query
         self.sort = sort
         self.include_nsfw = include_nsfw
-        self.mutex = QMutex()
+        self._stop_flag = False
+        self.start()
 
-    def run(self):
-        self.mutex.lock()
-        try:
-            self.log_signal.emit("Initializing Snowfl...")
-            snowfl = Snowfl()
-            snowfl.initialize()
-            self.log_signal.emit("Snowfl initialized successfully.")
+    def stop(self):
+        self._stop_flag = True
+        self.wait()
 
-            self.log_signal.emit(f"Fetching results for query: {self.query}")
-            results = snowfl.parse(self.query, sort=self.sort, include_nsfw=self.include_nsfw)
-            self.log_signal.emit(f"Results fetched successfully.")
-            self.log_signal.emit(f"Results: {results}")
+# snowfl = Snowfl()
+# try:
+#     snowfl.initialize()
+# except ApiError as e:
+#     print(f"Error initializing Snowfl: {e}")
 
-            self.result_signal.emit(results)
-            append_to_history(results)
-        except Exception as e:
-            self.log_signal.emit(f"Error: {str(e)}")
-            logger.error("Exception in SnowflThread", exc_info=e)
-        finally:
-            self.mutex.unlock()
+# try:
+#     query = input("Query: ")
+#     sort = "MAX_SEED"
+#     include_nsfw = True
+#     results = snowfl.parse(query, sort=sort, include_nsfw=include_nsfw)
+#     pprint(results)
+#     # print(len(results))
+#     # for result in results:
+#     #     print(result)
+# except FetchError as e:
+#     print(f"Error searching Snowfl: {e}")
