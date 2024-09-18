@@ -172,29 +172,30 @@ class MainWindow(QMainWindow):
     def mousePressEvent(self, event):
         rect = self.rect()
         if (
-                rect.topLeft().x() + self.edge_margin >= event.x()
-                or rect.bottomRight().x() - self.edge_margin <= event.x()
-                or rect.topLeft().y() + self.edge_margin >= event.y()
-                or rect.bottomRight().y() - self.edge_margin <= event.y()
+                rect.topLeft().x() + self.edge_margin >= event.position().x()
+                or rect.bottomRight().x() - self.edge_margin <= event.position().x()
+                or rect.topLeft().y() + self.edge_margin >= event.position().y()
+                or rect.bottomRight().y() - self.edge_margin <= event.position().y()
         ):
             self.resizing = True
             self.dragging = False
-            self.resize_position = event.globalPos()
+            self.resize_position = event.globalPosition().toPoint()
         else:
             self.resizing = False
             self.dragging = True
-            self.drag_position = event.globalPos() - self.pos()
+            self.drag_position = event.globalPosition().toPoint() - self.pos()
 
     def mouseMoveEvent(self, event):
+        self.unsetCursor()
         if self.resizing:
-            delta = event.globalPos() - self.resize_position
+            delta = event.globalPosition().toPoint() - self.resize_position
             new_width = max(self.width() + delta.x(), 100)
-            new_height = max(self.height() + delta.y(), 100)
+            new_height = max(self.height(), 100)
             self.resize(new_width, new_height)
-            self.resize_position = event.globalPos()
+            self.resize_position = event.globalPosition().toPoint()
             self.setCursor(Qt.SizeFDiagCursor)
         elif self.dragging:
-            self.move(event.globalPos() - self.drag_position)
+            self.move(event.globalPosition().toPoint() - self.drag_position)
             self.setCursor(Qt.SizeAllCursor)
 
     def mouseReleaseEvent(self, event):

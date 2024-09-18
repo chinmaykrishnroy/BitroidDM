@@ -19,6 +19,8 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
                                QLabel, QLineEdit, QMainWindow, QPushButton,
                                QScrollArea, QSizePolicy, QSlider, QSpacerItem,
                                QStackedWidget, QToolButton, QVBoxLayout, QWidget)
+from PySide6.QtMultimediaWidgets import QVideoWidget
+
 import res
 
 
@@ -1783,7 +1785,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_21.addWidget(self.filesScrollArea)
 
-        self.videoOutputFrame = QFrame(self.filesWidget)
+        self.videoOutputFrame = QVideoWidget(self.filesWidget)
         self.videoOutputFrame.setObjectName(u"videoOutputFrame")
         self.videoOutputFrame.setFrameShape(QFrame.Shape.StyledPanel)
         self.videoOutputFrame.setFrameShadow(QFrame.Shadow.Raised)
