@@ -1787,8 +1787,8 @@ class Ui_MainWindow(object):
 
         self.videoOutputFrame = QVideoWidget(self.filesWidget)
         self.videoOutputFrame.setObjectName(u"videoOutputFrame")
-        self.videoOutputFrame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.videoOutputFrame.setFrameShadow(QFrame.Shadow.Raised)
+        # self.videoOutputFrame.setFrameShape(QFrame.Shape.StyledPanel)
+        # self.videoOutputFrame.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_24 = QVBoxLayout(self.videoOutputFrame)
         self.verticalLayout_24.setSpacing(0)
         self.verticalLayout_24.setObjectName(u"verticalLayout_24")
