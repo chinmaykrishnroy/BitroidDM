@@ -4,14 +4,11 @@ import requests
 from PySide6.QtCore import QThread, Signal, QMutex, QMutexLocker
 from typing import Dict, Any
 
-# Configuration
 BASE_URL = "https://snowfl.com/"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 SITE = "https://snowfl.com/"
 REGEX_FOR_KEY = re.compile(r'findNextItem.*?"(.*?)"')
 REGEX_FOR_JS = re.compile(r'((?:b.min.js).*)(?=")')
-
-# Thread-safe Snowfl class
 
 class Snowfl:
     def __init__(self):
@@ -47,39 +44,9 @@ class Snowfl:
         }
         sort_type = sort_options.get(sort_key, "NONE")
         return f"/DH5kKsJw/0/{sort_type}/NONE/"
-
-
-# class SearchThread(QThread):
-#     search_result = Signal(int, list)  # Signal: emits 1 with results on success, 0 with empty list on failure
-
-#     def __init__(self):
-#         super().__init__()
-#         self.snowfl = Snowfl()
-#         self.mutex = QMutex()  # Mutex for mutual exclusion
-#         self.query = "harry potter"
-#         self.sort = "NONE"
-#         self.include_nsfw = False
-
-#     def run(self):
-#         with QMutexLocker(self.mutex):  # Ensure thread safety
-#             try:
-#                 results = self.snowfl.parse(self.query, self.sort, self.include_nsfw)
-#                 self.search_result.emit(1, results)  # Emit success signal with results
-#             except Exception:
-#                 self.search_result.emit(0, [])  # Emit failure signal with empty list
-
-#     def start_search(self, query: str, sort: str = "NONE", include_nsfw: bool = False):
-#         # Set the parameters for the search
-#         self.query = query
-#         self.sort = sort
-#         self.include_nsfw = include_nsfw
-#         # Start the thread
-#         if not self.isRunning():
-#             self.start()
-
-
+    
 class SearchThread(QThread):
-    search_result = Signal(int, list)
+    search_result = Signal(int, list, str)
 
     def __init__(self):
         super().__init__()
@@ -94,14 +61,14 @@ class SearchThread(QThread):
         while not self._stop_flag:
             with QMutexLocker(self.mutex):
                 if not self.query:
-                    self.search_result.emit(0, [])
+                    self.search_result.emit(0, [], "BLANK")
                     return
                 try:
                     results = self.snowfl.parse(self.query, self.sort, self.include_nsfw)
-                    self.search_result.emit(1, results)
+                    self.search_result.emit(1, results, "OK")
                 except Exception as e:
                     print(f"Error occurred during search: {str(e)}")
-                    self.search_result.emit(0, [])
+                    self.search_result.emit(0, [], str(e))
                 finally:
                     self._stop_flag = True
 
