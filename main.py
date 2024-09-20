@@ -74,6 +74,7 @@ class MainWindow(QMainWindow):
         self.ui.favoritesMenuBtn.clicked.connect(self.showFavorites)
         self.ui.historyMenuBtn.clicked.connect(self.showHistory)
         self.ui.settingsMenuBtn.clicked.connect(self.showSettings)
+        self.ui.settingsBtn.clicked.connect(lambda: self.ui.mainStack.setCurrentIndex(5))
         self.ui.helpMenuBtn.clicked.connect(self.showHelp)
         self.ui.mediaPlayerShowBtn.clicked.connect(self.toggleMediaPlayer)
         self.ui.notificationBtn.clicked.connect(
@@ -470,7 +471,7 @@ class MainWindow(QMainWindow):
                 self.ui.logLabel.setText(f"{len(results)} Results Found.")
             else:
                 self.dots_timer.stop()
-                self.ui.logLabel.setText("No results found!")
+                self.ui.logLabel.setText("No result found!")
             endOfSearchBtn = QPushButton(self.ui.scrollAreaContents)
             endOfSearchBtn.setObjectName(u"endOfSearchBtn")
             endOfSearchBtn.setMinimumSize(QSize(0, 100))
