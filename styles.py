@@ -252,7 +252,7 @@ QPushButton {
 	color: #ffffff;
 }
 
-#searchOutputFrame QPushButton {
+#searchOutputBtnsFrame QPushButton {
 	font-size: 14px;
 	color: #ffffff;
 }
@@ -880,5 +880,20 @@ QPushButton {
 
 #label {
 	color: #dddddd;
+}
+
+#initLabelBtn2 {
+	font-size: 84px;
+	text-align: left;
+	color: #a7b308;
+}
+
+#initLabelBtn2:hover {
+	color: #000000;
+}
+
+#initLabelBtn {
+	text-align: left;
+	font-size: 14px;
 }
 """

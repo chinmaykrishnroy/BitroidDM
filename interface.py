@@ -420,227 +420,40 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.setSpacing(4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.verticalLayout_14.setContentsMargins(-1, -1, -1, 9)
-        self.resultNameLabel = QLabel(self.searchOutputFrame)
-        self.resultNameLabel.setObjectName(u"resultNameLabel")
-        self.resultNameLabel.setMinimumSize(QSize(0, 0))
-        self.resultNameLabel.setFont(font)
+        self.initSearchFrame = QFrame(self.searchOutputFrame)
+        self.initSearchFrame.setObjectName(u"initSearchFrame")
+        self.initSearchFrame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.initSearchFrame.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_23 = QVBoxLayout(self.initSearchFrame)
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
+        self.initLabelBtn2 = QPushButton(self.initSearchFrame)
+        self.initLabelBtn2.setObjectName(u"initLabelBtn2")
+        self.initLabelBtn2.setMaximumSize(QSize(16777215, 72))
+        self.initLabelBtn2.setFont(font)
 
-        self.verticalLayout_14.addWidget(self.resultNameLabel)
+        self.verticalLayout_23.addWidget(self.initLabelBtn2)
 
-        self.searchOutputInfoFrame1 = QFrame(self.searchOutputFrame)
-        self.searchOutputInfoFrame1.setObjectName(u"searchOutputInfoFrame1")
-        self.searchOutputInfoFrame1.setMinimumSize(QSize(0, 22))
-        self.searchOutputInfoFrame1.setMaximumSize(QSize(16777215, 16777215))
-        self.searchOutputInfoFrame1.setSizeIncrement(QSize(0, 0))
-        self.searchOutputInfoFrame1.setFrameShape(QFrame.Shape.StyledPanel)
-        self.searchOutputInfoFrame1.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout_13 = QHBoxLayout(self.searchOutputInfoFrame1)
-        self.horizontalLayout_13.setSpacing(16)
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
-        self.resultSeederLabel = QLabel(self.searchOutputInfoFrame1)
-        self.resultSeederLabel.setObjectName(u"resultSeederLabel")
-        self.resultSeederLabel.setMinimumSize(QSize(72, 0))
+        self.initLabelBtn = QPushButton(self.initSearchFrame)
+        self.initLabelBtn.setObjectName(u"initLabelBtn")
+        self.initLabelBtn.setFont(font)
 
-        self.horizontalLayout_13.addWidget(self.resultSeederLabel)
+        self.verticalLayout_23.addWidget(self.initLabelBtn)
 
-        self.resultLeecherLabel = QLabel(self.searchOutputInfoFrame1)
-        self.resultLeecherLabel.setObjectName(u"resultLeecherLabel")
-        self.resultLeecherLabel.setMinimumSize(QSize(72, 0))
 
-        self.horizontalLayout_13.addWidget(self.resultLeecherLabel)
+        self.verticalLayout_14.addWidget(self.initSearchFrame, 0, Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignVCenter)
 
-        self.resultSizeLabel = QLabel(self.searchOutputInfoFrame1)
-        self.resultSizeLabel.setObjectName(u"resultSizeLabel")
-        self.resultSizeLabel.setMinimumSize(QSize(82, 0))
-
-        self.horizontalLayout_13.addWidget(self.resultSizeLabel)
-
-        self.nsfwLabel = QLabel(self.searchOutputInfoFrame1)
-        self.nsfwLabel.setObjectName(u"nsfwLabel")
-        self.nsfwLabel.setMinimumSize(QSize(36, 0))
-
-        self.horizontalLayout_13.addWidget(self.nsfwLabel)
-
-        self.verticalLayout_14.addWidget(
-            self.searchOutputInfoFrame1, 0, Qt.AlignmentFlag.AlignLeft)
-
-        self.searchOutputInfoFrame2 = QFrame(self.searchOutputFrame)
-        self.searchOutputInfoFrame2.setObjectName(u"searchOutputInfoFrame2")
-        self.searchOutputInfoFrame2.setMinimumSize(QSize(0, 22))
-        self.searchOutputInfoFrame2.setMaximumSize(QSize(16777215, 16777215))
-        self.searchOutputInfoFrame2.setSizeIncrement(QSize(0, 0))
-        self.searchOutputInfoFrame2.setFrameShape(QFrame.Shape.StyledPanel)
-        self.searchOutputInfoFrame2.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout_14 = QHBoxLayout(self.searchOutputInfoFrame2)
-        self.horizontalLayout_14.setSpacing(16)
-        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
-        self.resultAgeLabel = QLabel(self.searchOutputInfoFrame2)
-        self.resultAgeLabel.setObjectName(u"resultAgeLabel")
-
-        self.horizontalLayout_14.addWidget(self.resultAgeLabel)
-
-        self.resultSiteLabel = QLabel(self.searchOutputInfoFrame2)
-        self.resultSiteLabel.setObjectName(u"resultSiteLabel")
-
-        self.horizontalLayout_14.addWidget(self.resultSiteLabel)
-
-        self.resultTypeLabel = QLabel(self.searchOutputInfoFrame2)
-        self.resultTypeLabel.setObjectName(u"resultTypeLabel")
-        self.resultTypeLabel.setMinimumSize(QSize(130, 0))
-
-        self.horizontalLayout_14.addWidget(self.resultTypeLabel)
-
-        self.verticalLayout_14.addWidget(
-            self.searchOutputInfoFrame2, 0, Qt.AlignmentFlag.AlignLeft)
-
-        self.searchOutputBtnsFrame = QFrame(self.searchOutputFrame)
-        self.searchOutputBtnsFrame.setObjectName(u"searchOutputBtnsFrame")
-        self.searchOutputBtnsFrame.setMinimumSize(QSize(0, 22))
-        self.searchOutputBtnsFrame.setMaximumSize(QSize(16777215, 16777215))
-        self.searchOutputBtnsFrame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.searchOutputBtnsFrame.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout_15 = QHBoxLayout(self.searchOutputBtnsFrame)
-        self.horizontalLayout_15.setSpacing(16)
-        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
-        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.favoriteBtn = QToolButton(self.searchOutputBtnsFrame)
-        self.favoriteBtn.setObjectName(u"favoriteBtn")
-        self.favoriteBtn.setMinimumSize(QSize(0, 0))
-        self.favoriteBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        icon16 = QIcon()
-        icon16.addFile(u":/icons/icons/heart.svg", QSize(),
-                       QIcon.Mode.Normal, QIcon.State.Off)
-        self.favoriteBtn.setIcon(icon16)
-        self.favoriteBtn.setIconSize(QSize(20, 20))
-
-        self.horizontalLayout_15.addWidget(self.favoriteBtn)
-
-        self.magnetLinkBtn = QPushButton(self.searchOutputBtnsFrame)
-        self.magnetLinkBtn.setObjectName(u"magnetLinkBtn")
-        self.magnetLinkBtn.setMinimumSize(QSize(58, 0))
-        self.magnetLinkBtn.setCursor(
-            QCursor(Qt.CursorShape.PointingHandCursor))
-        icon17 = QIcon()
-        icon17.addFile(u":/icons/icons/cil-link.png", QSize(),
-                       QIcon.Mode.Normal, QIcon.State.Off)
-        self.magnetLinkBtn.setIcon(icon17)
-        self.magnetLinkBtn.setIconSize(QSize(12, 12))
-
-        self.horizontalLayout_15.addWidget(self.magnetLinkBtn)
-
-        self.downloadBtn = QPushButton(self.searchOutputBtnsFrame)
-        self.downloadBtn.setObjectName(u"downloadBtn")
-        self.downloadBtn.setMinimumSize(QSize(68, 0))
-        self.downloadBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.downloadBtn.setIcon(icon10)
-        self.downloadBtn.setIconSize(QSize(12, 12))
-
-        self.horizontalLayout_15.addWidget(self.downloadBtn)
-
-        self.urlBtn = QPushButton(self.searchOutputBtnsFrame)
-        self.urlBtn.setObjectName(u"urlBtn")
-        self.urlBtn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        icon18 = QIcon()
-        icon18.addFile(u":/icons/icons/cil-link-alt.png",
-                       QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.urlBtn.setIcon(icon18)
-        self.urlBtn.setIconSize(QSize(12, 12))
-
-        self.horizontalLayout_15.addWidget(self.urlBtn)
-
-        self.verifiedBtn = QPushButton(self.searchOutputBtnsFrame)
-        self.verifiedBtn.setObjectName(u"verifiedBtn")
-        self.verifiedBtn.setMinimumSize(QSize(0, 0))
-        icon19 = QIcon()
-        icon19.addFile(u":/icons/icons/cil-check-alt.png",
-                       QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.verifiedBtn.setIcon(icon19)
-        self.verifiedBtn.setIconSize(QSize(12, 12))
-
-        self.horizontalLayout_15.addWidget(self.verifiedBtn)
-
-        self.verticalLayout_14.addWidget(
-            self.searchOutputBtnsFrame, 0, Qt.AlignmentFlag.AlignLeft)
 
         self.verticalLayout_13.addWidget(self.searchOutputFrame)
 
-        self.frame_2 = QFrame(self.scrollAreaContents)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setMinimumSize(QSize(0, 112))
-        self.frame_2.setStyleSheet(u"* {\n"
-                                   "	background: #222222;\n"
-                                   "	border-radius: 12px;\n"
-                                   "}\n"
-                                   "")
-        self.frame_2.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.verticalLayout_13.addWidget(self.frame_2)
-
-        self.frame_3 = QFrame(self.scrollAreaContents)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setMinimumSize(QSize(0, 112))
-        self.frame_3.setStyleSheet(u"* {\n"
-                                   "	background: #222222;\n"
-                                   "	border-radius: 12px;\n"
-                                   "}\n"
-                                   "")
-        self.frame_3.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.verticalLayout_13.addWidget(self.frame_3)
-
-        self.frame_4 = QFrame(self.scrollAreaContents)
-        self.frame_4.setObjectName(u"frame_4")
-        self.frame_4.setMinimumSize(QSize(0, 100))
-        self.frame_4.setStyleSheet(u"* {\n"
-                                   "	background: #222222;\n"
-                                   "	border-radius: 12px;\n"
-                                   "}\n"
-                                   "")
-        self.frame_4.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_4.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.verticalLayout_13.addWidget(self.frame_4)
-
-        self.frame_5 = QFrame(self.scrollAreaContents)
-        self.frame_5.setObjectName(u"frame_5")
-        self.frame_5.setMinimumSize(QSize(0, 100))
-        self.frame_5.setStyleSheet(u"* {\n"
-                                   "	background: #222222;\n"
-                                   "	border-radius: 12px;\n"
-                                   "}\n"
-                                   "")
-        self.frame_5.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_5.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.verticalLayout_13.addWidget(self.frame_5)
-
-        self.frame_6 = QFrame(self.scrollAreaContents)
-        self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setMinimumSize(QSize(0, 100))
-        self.frame_6.setStyleSheet(u"* {\n"
-                                   "	background: #222222;\n"
-                                   "	border-radius: 12px;\n"
-                                   "}\n"
-                                   "")
-        self.frame_6.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_6.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.verticalLayout_13.addWidget(self.frame_6)
-
-        self.endOfSearchBtn = QPushButton(self.scrollAreaContents)
-        self.endOfSearchBtn.setObjectName(u"endOfSearchBtn")
-        self.endOfSearchBtn.setMinimumSize(QSize(0, 100))
-
-        self.verticalLayout_13.addWidget(self.endOfSearchBtn)
-
-        self.verticalSpacer_2 = QSpacerItem(
-            20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_13.addItem(self.verticalSpacer_2)
+        icon17 = QIcon()
+        icon17.addFile(u":/icons/icons/cil-link.png", QSize(),
+                       QIcon.Mode.Normal, QIcon.State.Off)
+        icon18 = QIcon()
+        icon18.addFile(u":/icons/icons/cil-link-alt.png",
+                       QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon19 = QIcon()
+        icon19.addFile(u":/icons/icons/cil-check-alt.png",
+                       QSize(), QIcon.Mode.Normal, QIcon.State.Off)
 
         self.searchScrollArea.setWidget(self.scrollAreaContents)
 
@@ -2064,7 +1877,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainStack.setCurrentIndex(2)
+        self.mainStack.setCurrentIndex(0)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -2078,6 +1891,8 @@ class Ui_MainWindow(object):
             "MainWindow", u"Bitroid DM", None))
         self.netSpeedBtn.setText(QCoreApplication.translate(
             "MainWindow", u"999.9 KB/s", None))
+        self.initLabelBtn2.setText(QCoreApplication.translate("MainWindow", u"Bitroid DM", None))
+        self.initLabelBtn.setText(QCoreApplication.translate("MainWindow", u"  A BitTorrent Client, Search to See Magic...", None))
         self.themeBtn.setText(
             QCoreApplication.translate("MainWindow", u"...", None))
         self.notificationBtn.setText(
@@ -2109,34 +1924,6 @@ class Ui_MainWindow(object):
         self.searchInputText.setPlaceholderText(QCoreApplication.translate(
             "MainWindow", u"Enter the shortest possible query to search...", None))
         self.searchBtn.setText("")
-        self.resultNameLabel.setText(QCoreApplication.translate(
-            "MainWindow", u"Harry Potter and the Order of the Phoenix 2007 1080p BrRip x264 YIFY", None))
-        self.resultSeederLabel.setText(
-            QCoreApplication.translate("MainWindow", u"Seeder: 9999", None))
-        self.resultLeecherLabel.setText(
-            QCoreApplication.translate("MainWindow", u"Leecher: 9999", None))
-        self.resultSizeLabel.setText(QCoreApplication.translate(
-            "MainWindow", u"Syze: 9999.0 GB", None))
-        self.nsfwLabel.setText(
-            QCoreApplication.translate("MainWindow", u"NSFW", None))
-        self.resultAgeLabel.setText(QCoreApplication.translate(
-            "MainWindow", u"Age: 4 weeks", None))
-        self.resultSiteLabel.setText(QCoreApplication.translate(
-            "MainWindow", u"Site: thepiratebay", None))
-        self.resultTypeLabel.setText(QCoreApplication.translate(
-            "MainWindow", u"Type: TV - HEVC/x265", None))
-        self.favoriteBtn.setText(
-            QCoreApplication.translate("MainWindow", u"...", None))
-        self.magnetLinkBtn.setText(
-            QCoreApplication.translate("MainWindow", u"Magnet", None))
-        self.downloadBtn.setText(QCoreApplication.translate(
-            "MainWindow", u"Download", None))
-        self.urlBtn.setText(QCoreApplication.translate(
-            "MainWindow", u"Page URL", None))
-        self.verifiedBtn.setText(QCoreApplication.translate(
-            "MainWindow", u"Verified", None))
-        self.endOfSearchBtn.setText(QCoreApplication.translate(
-            "MainWindow", u"No More Results!", None))
         self.label.setText(QCoreApplication.translate(
             "MainWindow", u"Downloads", None))
         self.fileStackTitleBtn.setText(

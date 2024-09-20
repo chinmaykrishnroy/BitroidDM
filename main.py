@@ -212,7 +212,7 @@ class MainWindow(QMainWindow):
         if self.resizing:
             delta = event.globalPosition().toPoint() - self.resize_position
             new_width = max(self.width() + delta.x(), 100)
-            new_height = max(self.height(), 100)
+            new_height = max(self.height() + delta.y(), 100)
             self.resize(new_width, new_height)
             self.resize_position = event.globalPosition().toPoint()
             self.setCursor(Qt.SizeFDiagCursor)
@@ -352,6 +352,7 @@ class MainWindow(QMainWindow):
 
         # Buttons Frame
         searchOutputBtnsFrame = QFrame(searchOutputFrame)
+        searchOutputBtnsFrame.setObjectName("searchOutputBtnsFrame")
         searchOutputBtnsFrame.setMinimumSize(QSize(0, 22))
         searchOutputBtnsFrame.setFrameShape(QFrame.Shape.StyledPanel)
         searchOutputBtnsFrame.setFrameShadow(QFrame.Shadow.Raised)
@@ -469,14 +470,21 @@ class MainWindow(QMainWindow):
                     self.createResultTile(result, self.ui.scrollAreaContents, self.ui.verticalLayout_13)
                 self.dots_timer.stop()
                 self.ui.logLabel.setText(f"{len(results)} Results Found.")
+                endOfSearchBtn = QPushButton(self.ui.scrollAreaContents)
+                endOfSearchBtn.setObjectName(u"endOfSearchBtn")
+                endOfSearchBtn.setMinimumSize(QSize(0, 100))
+                endOfSearchBtn.setText("No More Results!")
+                self.ui.verticalLayout_13.addWidget(endOfSearchBtn)  
+                verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+                self.ui.verticalLayout_13.addItem(verticalSpacer)
             else:
                 self.dots_timer.stop()
                 self.ui.logLabel.setText("No result found!")
-            endOfSearchBtn = QPushButton(self.ui.scrollAreaContents)
-            endOfSearchBtn.setObjectName(u"endOfSearchBtn")
-            endOfSearchBtn.setMinimumSize(QSize(0, 100))
-            endOfSearchBtn.setText("No More Results!")
-            self.ui.verticalLayout_13.addWidget(endOfSearchBtn)
+                endOfSearchBtn = QPushButton(self.ui.scrollAreaContents)
+                endOfSearchBtn.setObjectName(u"endOfSearchBtn")
+                endOfSearchBtn.setMinimumSize(QSize(0, 100))
+                endOfSearchBtn.setText("No More Results!")
+                self.ui.verticalLayout_13.addWidget(endOfSearchBtn)  
         else:
             self.dots_timer.stop()
             self.ui.logLabel.setText("Search Failed!")

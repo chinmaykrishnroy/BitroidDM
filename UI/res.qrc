@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>view.gif</file>
+    <file>meteor-rain.gif</file>
+    <file>compass.gif</file>
     <file>loader-dark.gif</file>
     <file>loader-transparent.svg</file>
     <file>loader-dark.svg</file>
