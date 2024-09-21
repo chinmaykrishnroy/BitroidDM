@@ -1,1 +1,1 @@
-endOfFavoriteBtn
+    def openFile(self, path):

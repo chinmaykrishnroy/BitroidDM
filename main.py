@@ -7,7 +7,7 @@ import webbrowser
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QTimer
 from PySide6.QtWidgets import QGraphicsOpacityEffect
 from searchthread import SearchThread
-from networkthread import AppNetworkMonitor
+from networkthread import InternetChecker
 from favoritethread import FavoriteTorrent
 from historythread import HistoryManager
 from filethread import FileWatcher
@@ -786,9 +786,9 @@ class MainWindow(QMainWindow):
             self.ui.verticalLayout_29.addWidget(endOfFavoriteBtn)  
     
     def initNetworkMonitor(self):
-        self.network_monitor = AppNetworkMonitor()
+        self.network_monitor = InternetChecker()
         self.network_monitor.connectivity_changed.connect(self.updateNetConnectivity)
-        self.network_monitor.speed_changed.connect(self.updateNetSpeed)
+        self.network_monitor.network_speed.connect(self.updateNetSpeed)
         self.network_monitor.start()
 
     def updateNetConnectivity(self, connected):
