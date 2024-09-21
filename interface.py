@@ -1240,12 +1240,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_29.addWidget(self.frame)
 
-        self.endOfFavoritesBtn = QPushButton(
+        self.endOfFavoriteBtn = QPushButton(
             self.favoritesScrollAreaWidgetContents)
-        self.endOfFavoritesBtn.setObjectName(u"endOfFavoritesBtn")
-        self.endOfFavoritesBtn.setMinimumSize(QSize(0, 100))
+        self.endOfFavoriteBtn.setObjectName(u"endOfFavoriteBtn")
+        self.endOfFavoriteBtn.setMinimumSize(QSize(0, 100))
 
-        self.verticalLayout_29.addWidget(self.endOfFavoritesBtn)
+        self.verticalLayout_29.addWidget(self.endOfFavoriteBtn)
 
         self.verticalSpacer_4 = QSpacerItem(
             20, 101, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
@@ -1895,7 +1895,7 @@ class Ui_MainWindow(object):
         self.netSpeedBtn.setText(QCoreApplication.translate(
             "MainWindow", u"999.9 KB/s", None))
         self.initLabelBtn2.setText(QCoreApplication.translate("MainWindow", u"Bitroid DM", None))
-        self.initLabelBtn.setText(QCoreApplication.translate("MainWindow", u"  A BitTorrent Client, Make a Search to See Magic...", None))
+        self.initLabelBtn.setText(QCoreApplication.translate("MainWindow", u"  A BitTorrent Client, Make a Search to Load Torrents from Web...", None))
         self.themeBtn.setText(
             QCoreApplication.translate("MainWindow", u"...", None))
         self.notificationBtn.setText(
@@ -2013,7 +2013,7 @@ class Ui_MainWindow(object):
             "MainWindow", u"Page URL", None))
         self.verifiedBtn_2.setText(
             QCoreApplication.translate("MainWindow", u"Verified", None))
-        self.endOfFavoritesBtn.setText(QCoreApplication.translate(
+        self.endOfFavoriteBtn.setText(QCoreApplication.translate(
             "MainWindow", u"No More Favorite Items", None))
         self.historyMenuTitleBtn.setText(
             QCoreApplication.translate("MainWindow", u"History", None))

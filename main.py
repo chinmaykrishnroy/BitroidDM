@@ -94,9 +94,8 @@ class MainWindow(QMainWindow):
         self.ui.notificationBtn.clicked.connect(
             lambda: self.pushNotification("Hello"))
         self.ui.closeNotificationBtn.clicked.connect(self.hideNotificationTab)
-
         self.ui.searchBtn.clicked.connect(self.searchTorrents)
-        QTimer.singleShot(3000, self.stopInitAnimation)
+        QTimer.singleShot(self.label_timeout, self.stopLoadingAnimation)
 
     def toggleMaximized(self):
         if self.isMaximized():
@@ -240,9 +239,13 @@ class MainWindow(QMainWindow):
         self.dragging = False
         self.unsetCursor()
 
-    def stopInitAnimation(self):
+    def stopLoadingAnimation(self,index=0):
         self.ui.initGif.stop()
-        self.ui.mainStack.setCurrentIndex(0)
+        self.ui.mainStack.setCurrentIndex(index)
+
+    def startLoadingAnimation(self):
+        self.ui.initGif.start()
+        self.ui.mainStack.setCurrentIndex(7)
 
     def initFileWatcher(self, directory, depth):
         self.file_watcher = FileWatcher(directory, depth)
@@ -376,7 +379,7 @@ class MainWindow(QMainWindow):
         elif file_type in self.video_formats: file['type'], files_type = "Video", 2
         else: 
             file['type'], files_type = f"{file['type'][1:].upper()} File", 0
-            playFileBtn.setIcon(QIcon(":/icons/icons/file.svg"))
+            playFileBtn.setIcon(QIcon(":/icons/icons/external-link.svg"))
 
         # File type label
         fileTypeLabel = QLabel(fileInfoFrame2)
@@ -387,7 +390,7 @@ class MainWindow(QMainWindow):
         # File modified date label
         fileModifiedLabel = QLabel(fileInfoFrame2)
         fileModifiedLabel.setObjectName(u"fileModifiedLabel")
-        fileModifiedLabel.setText(f"Last Modified: {file.get('modified_time', 'Unknown')}")
+        fileModifiedLabel.setText(f"Modified: {file.get('modified_time', 'Unknown')}")
         horizontalLayout_22.addWidget(fileModifiedLabel)
         horizontalLayout_23.addWidget(fileInfoFrame2)
         verticalLayout_25.addWidget(fileInfoBtnFrame)
@@ -768,19 +771,19 @@ class MainWindow(QMainWindow):
         if favorite_list:
             for result in favorite_list:
                 self.createFavTile(result, self.ui.favoritesScrollAreaWidgetContents, self.ui.verticalLayout_29)
-            endOfFavoritesBtn = QPushButton(self.ui.favoritesScrollAreaWidgetContents)
-            endOfFavoritesBtn.setObjectName(u"endOfFavoritesBtn")
-            endOfFavoritesBtn.setMinimumSize(QSize(0, 100))
-            endOfFavoritesBtn.setText(f"End of {len(favorite_list)} Favorite Items.")
-            self.ui.verticalLayout_29.addWidget(endOfFavoritesBtn)  
+            endOfFavoriteBtn = QPushButton(self.ui.favoritesScrollAreaWidgetContents)
+            endOfFavoriteBtn.setObjectName(u"endOfFavoriteBtn")
+            endOfFavoriteBtn.setMinimumSize(QSize(0, 100))
+            endOfFavoriteBtn.setText(f"End of {len(favorite_list)} Favorite Items.")
+            self.ui.verticalLayout_29.addWidget(endOfFavoriteBtn)  
             verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
             self.ui.verticalLayout_29.addItem(verticalSpacer)
         else:
-            endOfFavoritesBtn = QPushButton(self.ui.favoritesScrollAreaWidgetContents)
-            endOfFavoritesBtn.setObjectName(u"endOfFavoritesBtn")
-            endOfFavoritesBtn.setMinimumSize(QSize(0, 100))
-            endOfFavoritesBtn.setText("Add Items to Favorite First!")
-            self.ui.verticalLayout_29.addWidget(endOfFavoritesBtn)  
+            endOfFavoriteBtn = QPushButton(self.ui.favoritesScrollAreaWidgetContents)
+            endOfFavoriteBtn.setObjectName(u"endOfFavoriteBtn")
+            endOfFavoriteBtn.setMinimumSize(QSize(0, 100))
+            endOfFavoriteBtn.setText("Add Items to Favorite First!")
+            self.ui.verticalLayout_29.addWidget(endOfFavoriteBtn)  
     
     def initNetworkMonitor(self):
         self.network_monitor = AppNetworkMonitor()
@@ -1048,6 +1051,7 @@ class MainWindow(QMainWindow):
                 for result in results:
                     self.createResultTile(result, self.ui.scrollAreaContents, self.ui.verticalLayout_13)
                 self.dots_timer.stop()
+                self.stopLoadingAnimation()
                 self.ui.logLabel.setText(f"{len(results)} Results Found.")
                 endOfSearchBtn = QPushButton(self.ui.scrollAreaContents)
                 endOfSearchBtn.setObjectName(u"endOfSearchBtn")
@@ -1058,6 +1062,7 @@ class MainWindow(QMainWindow):
                 self.ui.verticalLayout_13.addItem(verticalSpacer)
             else:
                 self.dots_timer.stop()
+                self.stopLoadingAnimation()
                 self.ui.logLabel.setText("No result found!")
                 endOfSearchBtn = QPushButton(self.ui.scrollAreaContents)
                 endOfSearchBtn.setObjectName(u"endOfSearchBtn")
@@ -1066,8 +1071,9 @@ class MainWindow(QMainWindow):
                 self.ui.verticalLayout_13.addWidget(endOfSearchBtn)  
         else:
             self.dots_timer.stop()
-            self.ui.logLabel.setText("Search Failed!")
+            self.stopLoadingAnimation()
             self.pushNotification(f"Search failed due to some unexpected errors, this error is from torrent search API. More info: {comment}", "Search Failed")
+            self.ui.logLabel.setText("Search Failed!")
     
     def searchTorrents(self):
         query = self.ui.searchInputText.text()
@@ -1076,8 +1082,9 @@ class MainWindow(QMainWindow):
                 if query:
                     self.dots_timer.start(500)
                     self.ui.logLabel.setText("Searching")
+                    self.startLoadingAnimation()
                     self.search_thread.start_search(query=query, sort="MAX_SEED", include_nsfw=True)
-                else: self.pushNotification("Query can't be blank or less than 3 letter, please enter a query before hitting the search button", "Blank Query")
+                else: self.pushNotification("Query can't be blank or less than 3 letter, please enter a query meeting the minimum requirements before hitting the search button", "Blank Query")
             else: 
                 self.initSearchThread()
                 self.pushNotification("Due to network error, torrent engine was left uninitialized while initializing the application. Trying to reinitialize torrent engine, retry with your query!", "Uninitialized Torrent Engine")

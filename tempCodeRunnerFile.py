@@ -1,1 +1,1 @@
-timestamp
+endOfFavoriteBtn
