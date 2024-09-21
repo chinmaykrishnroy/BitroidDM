@@ -12,7 +12,7 @@ from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
                             QMetaObject, QObject, QPoint, QRect,
                             QSize, QTime, QUrl, Qt, QEvent)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-                           QFont, QFontDatabase, QGradient, QIcon,
+                           QFont, QFontDatabase, QGradient, QIcon, QMovie,
                            QImage, QKeySequence, QLinearGradient, QPainter,
                            QPalette, QPixmap, QRadialGradient, QTransform,
                            QDesktopServices)
@@ -1672,6 +1672,9 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_34.addWidget(
             self.initIcon, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.initGif = QMovie(u":/icons/loader-dark.gif" if True else u":/icons/loader-transparent.svg")
+        self.initIcon.setMovie(self.initGif)
+        self.initGif.start()
 
         self.verticalLayout_42.addWidget(self.initAppWidget)
 
@@ -1877,7 +1880,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainStack.setCurrentIndex(0)
+        self.mainStack.setCurrentIndex(7)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -1892,7 +1895,7 @@ class Ui_MainWindow(object):
         self.netSpeedBtn.setText(QCoreApplication.translate(
             "MainWindow", u"999.9 KB/s", None))
         self.initLabelBtn2.setText(QCoreApplication.translate("MainWindow", u"Bitroid DM", None))
-        self.initLabelBtn.setText(QCoreApplication.translate("MainWindow", u"  A BitTorrent Client, Search to See Magic...", None))
+        self.initLabelBtn.setText(QCoreApplication.translate("MainWindow", u"  A BitTorrent Client, Make a Search to See Magic...", None))
         self.themeBtn.setText(
             QCoreApplication.translate("MainWindow", u"...", None))
         self.notificationBtn.setText(

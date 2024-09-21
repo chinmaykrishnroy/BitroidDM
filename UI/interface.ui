@@ -273,7 +273,7 @@ QPushButton {
 	color: #ffffff;
 }
 
-#searchOutputFrame QPushButton {
+#searchOutputBtnsFrame QPushButton {
 	font-size: 14px;
 	color: #ffffff;
 }
@@ -480,10 +480,7 @@ QPushButton {
 	border-radius: 2px;
 }
 
-#mediaLeftSideControlFrames QComboBox:hover {
-	border-style: solid; 
-	border-radius: 2px; 
-}
+
 
 #mediaButtonsFrame QComboBox:pressed {
 	border-style: solid; 
@@ -840,6 +837,24 @@ QPushButton {
 	margin-bottom: 8px;
 }
 
+#settingLeftScrollWidget QComboBox {
+	height: 21px;
+	font-size: 16px;
+	background: #a7b308;
+	color: 2d2d30;
+	padding: 4px 12px;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	margin-bottom: 8px;
+}
+
+#settingLeftScrollWidget QComboBox::drop-down:button
+{
+    border: none;
+    padding: 0;
+    width: 0;
+}
+
 #settingLeftScrollWidget QPushButton:hover {
 	background: #b7d318;
 }
@@ -1082,113 +1097,6 @@ QPushButton {
                 </size>
                </property>
               </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item alignment="Qt::AlignmentFlag::AlignRight">
-           <widget class="QFrame" name="someMoreBtnFrame">
-            <property name="frameShape">
-             <enum>QFrame::Shape::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Raised</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <spacer name="headerSpacerMid">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QToolButton" name="themeBtn">
-               <property name="minimumSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="res.qrc">
-                 <normaloff>:/icons/icons/cil-lightbulb.png</normaloff>:/icons/icons/cil-lightbulb.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="notificationBtn">
-               <property name="minimumSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="res.qrc">
-                 <normaloff>:/icons/icons/cil-bell.png</normaloff>:/icons/icons/cil-bell.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="settingsBtn">
-               <property name="minimumSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="res.qrc">
-                 <normaloff>:/icons/icons/cil-settings.png</normaloff>:/icons/icons/cil-settings.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>16</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="headerSpacerRight">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </widget>
@@ -1612,7 +1520,7 @@ QPushButton {
              </size>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="searchStack">
              <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1716,7 +1624,7 @@ QPushButton {
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>719</width>
+                      <width>694</width>
                       <height>764</height>
                      </rect>
                     </property>
@@ -3528,8 +3436,8 @@ QPushButton {
                     <property name="geometry">
                      <rect>
                       <x>0</x>
-                      <y>0</y>
-                      <width>719</width>
+                      <y>-256</y>
+                      <width>694</width>
                       <height>636</height>
                      </rect>
                     </property>
@@ -4125,7 +4033,7 @@ QPushButton {
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>719</width>
+                      <width>694</width>
                       <height>532</height>
                      </rect>
                     </property>
@@ -4654,20 +4562,60 @@ QPushButton {
                           <property name="text">
                            <string>Enabled</string>
                           </property>
+                          <property name="checkable">
+                           <bool>true</bool>
+                          </property>
+                          <property name="checked">
+                           <bool>true</bool>
+                          </property>
                          </widget>
                         </item>
                         <item>
                          <widget class="QLabel" name="label_7">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>-1</pointsize>
+                            <bold>true</bold>
+                           </font>
+                          </property>
                           <property name="text">
-                           <string>TextLabel</string>
+                           <string>Sort Torrent By</string>
                           </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QPushButton" name="pushButton_16">
-                          <property name="text">
-                           <string>PushButton</string>
-                          </property>
+                         <widget class="QComboBox" name="comboBox_2">
+                          <item>
+                           <property name="text">
+                            <string>MAX_SEED</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>MAX_LEECH</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>SIZE_ASC</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>SIZE_DSC</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>RECENT</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>NONE</string>
+                           </property>
+                          </item>
                          </widget>
                         </item>
                         <item>
@@ -4748,9 +4696,12 @@ QPushButton {
                          </widget>
                         </item>
                         <item>
-                         <widget class="QPushButton" name="pushButton_9">
-                          <property name="text">
-                           <string>PushButton</string>
+                         <widget class="QComboBox" name="comboBox">
+                          <property name="maximumSize">
+                           <size>
+                            <width>16777215</width>
+                            <height>16777215</height>
+                           </size>
                           </property>
                          </widget>
                         </item>
@@ -4799,7 +4750,7 @@ QPushButton {
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>569</width>
+                         <width>535</width>
                          <height>402</height>
                         </rect>
                        </property>
