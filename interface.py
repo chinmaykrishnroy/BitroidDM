@@ -1882,12 +1882,14 @@ class Ui_MainWindow(object):
 
         self.mainStack.setCurrentIndex(7)
 
+        self.notificationWidget.hide()
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate(
-            "MainWindow", u"MainWindow", None))
+            "MainWindow", u"Bitroid DM", None))
         self.appIconBtn.setText(
             QCoreApplication.translate("MainWindow", u"...", None))
         self.appTitleBtn.setText(QCoreApplication.translate(

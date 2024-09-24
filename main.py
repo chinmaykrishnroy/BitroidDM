@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
         self.mediaplayer_visible = True
         self.ui.setupUi(self)
         self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowIcon(QIcon(u":/icons/icons/activity.svg"))
         self.show()
 
         self.animation_time = 80
@@ -37,6 +38,7 @@ class MainWindow(QMainWindow):
         self.dragging = False
         self.resize_position = None
         self.drag_position = None
+        self.refresh_api_timeout = 30000
 
         self.internet_connection = False
         self.torrent_engine_active = False
@@ -76,6 +78,10 @@ class MainWindow(QMainWindow):
         self.click_timer = QTimer(self)
         self.click_timer.setSingleShot(True)
         self.click_timer.timeout.connect(self.openDefaultMagnet)
+
+        self.search_api_refresh_timer = QTimer(self)
+        self.search_api_refresh_timer.timeout.connect(self.refreshSearchApi)
+        self.search_api_refresh_timer.start(self.refresh_api_timeout)
 
         self.ui.appCloseBtn.clicked.connect(lambda: self.close())
         self.ui.appMinBtn.clicked.connect(self.setMinimized)
@@ -238,6 +244,10 @@ class MainWindow(QMainWindow):
         self.resizing = False
         self.dragging = False
         self.unsetCursor()
+
+    def keyPressEvent(self, event):
+        if not self.ui.mainStack.currentIndex() and (event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter):
+            self.ui.searchBtn.click() 
 
     def stopLoadingAnimation(self,index=0):
         self.ui.initGif.stop()
@@ -826,6 +836,12 @@ class MainWindow(QMainWindow):
             if widget is not None:
                 widget.setParent(None)
                 widget.deleteLater()
+
+    def refreshSearchApi(self):
+        if self.torrent_engine_active: 
+            self.search_thread.stop()
+            self.torrent_engine_active = False
+        self.initSearchThread()
 
     def createResultTile(self, result, parent_widget, layout):
         searchOutputFrame = QFrame(parent_widget)
