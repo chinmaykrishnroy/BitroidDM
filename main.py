@@ -1054,7 +1054,7 @@ class MainWindow(QMainWindow):
         clipboard = QApplication.clipboard()
         clipboard.setText(text)
 
-    def temporaryLog(self, text, duration):
+    def temporaryLog(self, text, duration=5000):
         old_text = self.ui.logLabel.text()
         self.ui.logLabel.setText(text)
         QTimer.singleShot(duration, lambda: self.ui.logLabel.setText(old_text))
