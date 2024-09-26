@@ -1797,4 +1797,3 @@ QPushButton {
 	font-size: 14px;
 }
 """
-
