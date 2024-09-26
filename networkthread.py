@@ -11,11 +11,13 @@ class InternetChecker(QThread):
     def __init__(self):
         super().__init__()
         self._stop_event = threading.Event()
-        self.connected_to_internet = True
+        self.connected_to_internet = False
         self.previous_bytes_sent = psutil.net_io_counters().bytes_sent
         self.previous_bytes_recv = psutil.net_io_counters().bytes_recv
 
     def run(self):
+        self.connected_to_internet = self.check_internet_connection()
+        self.connectivity_changed.emit(self.connected_to_internet)
         while not self._stop_event.is_set():
             new_status = self.check_internet_connection()
             if new_status != self.connected_to_internet:
