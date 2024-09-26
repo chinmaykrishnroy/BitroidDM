@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         self.animation_time = 80
         self.allow_notification = True
         self.label_timeout = 2500
+        self.dark_theme = True
 
         self.edge_margin = 8
         self.resizing = False
@@ -46,7 +47,7 @@ class MainWindow(QMainWindow):
         self.initNetworkMonitor()
         self.initFavorites()
         self.initHistory()
-        self.initFileWatcher("C:\\Users\\morph\\Downloads", 0)
+        self.initFileWatcher("C:\\Users\\morph\\OneDrive\\Desktop\\Music", 0)
 
         self.video_formats = [".webm", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv", "mpeg", ".3gp", ".mts", ".ts", ".vob"]
         self.audio_formats = [".mp3", ".wav", ".aac", ".m4a", ".flac", ".ogg", ".wma"]
@@ -61,8 +62,7 @@ class MainWindow(QMainWindow):
         self.opacityEffect.setOpacity(0)
         self.ui.notificationWidget.hide()
 
-        self.notificationAnimation = QPropertyAnimation(
-            self.opacityEffect, b"opacity")
+        self.notificationAnimation = QPropertyAnimation(self.opacityEffect, b"opacity")
         self.notificationAnimation.setDuration(int(2 * self.animation_time))
         self.notificationAnimation.setEasingCurve(QEasingCurve.InOutSine)
 
@@ -79,13 +79,18 @@ class MainWindow(QMainWindow):
         self.click_timer.setSingleShot(True)
         self.click_timer.timeout.connect(self.openDefaultMagnet)
 
+        self.notification_timer = QTimer(self)
+        self.notification_timer.setSingleShot(True)
+        self.notification_timer.timeout.connect(self.hideNotificationTab)
+
         self.search_api_refresh_timer = QTimer(self)
         self.search_api_refresh_timer.timeout.connect(self.refreshSearchApi)
-        self.search_api_refresh_timer.start(self.refresh_api_timeout)
+        # self.search_api_refresh_timer.start(self.refresh_api_timeout)
 
         self.ui.appCloseBtn.clicked.connect(lambda: self.close())
         self.ui.appMinBtn.clicked.connect(self.setMinimized)
         self.ui.appMaxBtn.clicked.connect(self.toggleMaximized)
+        self.ui.themeBtn.clicked.connect(self.toggleTheme)
         self.ui.mainMenuBtn.clicked.connect(self.toggleSidebar)
         self.ui.searchMenuBtn.clicked.connect(self.showSearch)
         self.ui.downloadsMenuBtn.clicked.connect(self.showDownloads)
@@ -111,6 +116,18 @@ class MainWindow(QMainWindow):
 
     def setMinimized(self):
         self.showMinimized()
+
+    def toggleTheme(self):
+        if self.dark_theme :
+            self.ui.themeBtn.setIcon(QIcon(':/icons/icons/cil-moon.png'))
+            self.pushNotification("Theme changed to 'Retro' for the Bitroid DM", "Retro Theme")
+            self.setStyleSheet(styles_retro)
+            self.dark_theme = False
+        else:
+            self.ui.themeBtn.setIcon(QIcon(':/icons/icons/cil-lightbulb.png'))
+            self.pushNotification("Theme changed to 'Default' for the Bitroid DM", "Default Theme")
+            self.setStyleSheet(styles_default)
+            self.dark_theme = True
 
     def toggleSidebar(self):
         self.sidebar_visible ^= True
@@ -188,20 +205,22 @@ class MainWindow(QMainWindow):
             self.hideMediaPlayer()
 
     def pushNotification(self, notification_message, notification_title='Notification', notification_volume=25, tone=True):
-        self.notificationAnimation.stop()
+        if self.notification_timer.isActive():
+            self.notificationAnimation.stop()
+            self.ui.notificationWidget.hide()
+            self.notification_timer.stop()
+
         if self.allow_notification:
             if tone:
                 pass
             self.ui.notificationWidget.show()
-            self.notificationAnimation.setStartValue(
-                self.opacityEffect.opacity())
+            self.notificationAnimation.setStartValue(self.opacityEffect.opacity())
             self.notificationAnimation.setEndValue(1)
             self.notificationAnimation.start()
             if notification_title: self.ui.notificationTitleLabel.setText(notification_title)
             else: self.ui.notificationTitleLabel.hide()
             self.ui.notificationTextLabel.setText(notification_message)
-            QTimer.singleShot(int(2 * self.label_timeout),
-                              self.hideNotificationTab)
+            self.notification_timer.start(int(2 * self.label_timeout))
 
     def hideNotificationTab(self):
         self.notificationAnimation.setStartValue(self.opacityEffect.opacity())
