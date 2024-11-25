@@ -5,3 +5,4 @@
 ![Screenshot 2024-11-16 184305](https://github.com/user-attachments/assets/68e12ac0-6933-44e2-a65c-ada5195fac55)
 ![image](https://github.com/user-attachments/assets/0aa68aab-1b33-43dc-b57a-866f1e9fa707)
 ![image](https://github.com/user-attachments/assets/39a35656-e132-451e-99e5-fac2ede46829)
+![bit](https://github.com/user-attachments/assets/442ee3d5-7b00-4e04-b59b-295ab295ccb2)
