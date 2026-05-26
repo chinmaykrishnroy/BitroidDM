@@ -4,7 +4,7 @@ BitroidDM is a PySide6 desktop torrent search, download, file browsing, and medi
 
 ## Current Status
 
-The original Python 3.11+ libtorrent blocker has been resolved for Windows by using the proper `libtorrent-windows-dll` runtime package. The internal downloader is validated in the dev lab and is ready for UI integration, but the production downloads screen is still the next step.
+The original Python 3.11+ libtorrent blocker has been resolved for Windows by using the proper `libtorrent-windows-dll` runtime package. The internal downloader is now promoted from the dev lab into the production Downloads screen, with libtorrent-backed torrent creation, progress polling, app-specific speed reporting, file priorities, pause/resume/remove controls, persisted resume state, and a Bitroid-themed monitoring UI.
 
 ## What Has Been Done
 
@@ -18,6 +18,12 @@ The original Python 3.11+ libtorrent blocker has been resolved for Windows by us
 - Added app-specific network speed reporting instead of whole-system `psutil.net_io_counters()` traffic.
 - Built and tested a dev libtorrent engine with torrent files, magnets, progress, file progress, speed, peers, tracker events, pause/resume/remove, speed limits, file priorities, storage movement, recheck, and resume-data hooks.
 - Validated the engine against an official Ubuntu 26.04 LTS torrent in the OS Downloads directory.
+- Promoted the libtorrent loader and torrent engine into `bitroid/services/` for app use.
+- Integrated the Downloads UI with the internal torrent engine, including magnet/torrent add flows, metadata preview, torrent tables, detail tabs, context menus, and selectable file priorities.
+- Added persistent torrent state under the user's app data directory so torrents can reappear on reopen with saved resume data, paused/start intent, active filter, and total downloaded bytes.
+- Added a resizable vertical splitter between the torrent list and details panel so users can choose whether to see more table or detail content.
+- Added active-state styling for the downloader sidebar filters and compact themed dropdown/header styling for torrent tables.
+- Added a piece-map style progress strip and optimized detail refreshes so expensive file/peer/tracker updates only run for the visible tab.
 
 ## Windows Libtorrent Runtime DLLs
 
@@ -58,11 +64,22 @@ Useful checks:
 
 The live Ubuntu test uses the official Ubuntu 26.04 LTS torrent, saves into the OS Downloads directory, and stops once critical hooks plus real payload transfer are observed. It does not need to download the full ISO unless run with `--complete`.
 
+## Integrated Downloader State
+
+Runtime downloader state is stored outside the repository in the user's app data folder:
+
+- Windows: `%APPDATA%\BitroidDM\torrent_state\downloads.json`
+- macOS: `~/Library/Application Support/BitroidDM/torrent_state/downloads.json`
+- Linux: `$XDG_DATA_HOME/BitroidDM/torrent_state/downloads.json` or `~/.local/share/BitroidDM/torrent_state/downloads.json`
+
+The state file tracks torrent rows, resume data, active sidebar filter, paused/resume intent, and total bytes downloaded by BitroidDM's torrent client.
+
 ## Verification Used
 
 ```powershell
 .\venv\Scripts\python.exe -B -m py_compile main.py bitroid\app.py bitroid\services\network.py dev\libtorrent_lab\*.py
 .\venv\Scripts\pyside6-uic.exe bitroid\ui\designer\interface.ui -o $env:TEMP\bitroiddm_uic_check.py
+python -m compileall bitroid main.py
 ```
 
 Qt Designer currently emits one known warning from the existing UI file:
@@ -73,4 +90,4 @@ Buddy assignment: '' is not a valid widget.
 
 ## Next Step
 
-Integrate the validated `TorrentEngine` behind a PySide worker/service and wire the Downloads UI so BitroidDM handles magnet/torrent downloads internally instead of opening the system torrent app.
+Move the torrent engine work off the UI thread more completely, add formal automated tests around persisted torrent state, and continue polishing production downloader workflows such as first/last-piece mode, tracker editing, and full settings UI controls.
