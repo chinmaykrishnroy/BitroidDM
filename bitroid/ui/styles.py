@@ -1058,6 +1058,380 @@ QMenu::separator {
 	text-align: left;
 	font-size: 14px;
 }
+
+#torrentManagerWidget,
+#torrentRightPane,
+#torrentAddDialog,
+#torrentMagnetDialog {
+	background: #2b2d30;
+}
+
+#torrentToolbar,
+#torrentSidebar,
+#torrentAddHeader,
+#torrentAddFooter,
+#torrentAddOptionsPane,
+#torrentAddFilesPane,
+#torrentFilesTab,
+#torrentOverviewTab {
+	background: #2b2d30;
+}
+
+QSplitter#torrentMainSplitter::handle,
+QSplitter#torrentAddSplitter::handle {
+	background: #2b2d30;
+	border: 0px;
+	width: 4px;
+}
+
+QSplitter#torrentDetailSplitter::handle {
+	background: #2b2d30;
+	border-top: 2px solid #3b3d40;
+	border-bottom: 1px solid #1f2023;
+	height: 6px;
+}
+
+QSplitter#torrentDetailSplitter::handle:hover {
+	border-top: 2px solid #387780;
+}
+
+#torrentSidebar {
+	border-right: 1px solid #3b3d40;
+	border-radius: 6px;
+}
+
+#torrentSidebarTitle,
+#torrentAddSectionTitle,
+#torrentSectionTitle {
+	color: #a7b308;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+#torrentSidebarButton {
+	color: #dddddd;
+	text-align: left;
+	font-size: 12px;
+	padding: 4px 6px;
+	border-radius: 4px;
+}
+
+#torrentSidebarButton[active="true"],
+#torrentSidebarButton:checked {
+	background: #387780;
+	color: #ffffff;
+	font-weight: 600;
+}
+
+#torrentSidebarButton:hover,
+#torrentToolButton:hover,
+#torrentMiniButton:hover,
+#torrentSecondaryButton:hover {
+	background: #3b3d40;
+}
+
+#torrentSidebarButton:pressed,
+#torrentToolButton:pressed,
+#torrentMiniButton:pressed,
+#torrentSecondaryButton:pressed {
+	background: #111111;
+}
+
+#torrentToolButton {
+	background: #1f2023;
+	border: 1px solid #3b3d40;
+	border-radius: 5px;
+	min-width: 30px;
+	min-height: 28px;
+}
+
+#torrentFilterInput,
+#torrentAddPathInput {
+	background: #1f2023;
+	color: #dddddd;
+	border: 1px solid #3b3d40;
+	border-radius: 4px;
+	font-size: 12px;
+	padding: 4px 8px;
+}
+
+#torrentFilterCombo {
+	min-width: 76px;
+	text-align: center;
+	padding-left: 4px;
+	padding-right: 4px;
+	color: #dddddd;
+	background: #2b2d30;
+	font-family: "Segoe UI";
+	font-size: 14px;
+	border: none;
+	border-radius: 2px;
+}
+
+#torrentFilterCombo QAbstractItemView {
+	color: white;
+	background-color: #878389;
+	selection-background-color: #105758;
+	border: none;
+}
+
+#torrentFilterCombo::drop-down:button {
+	border: none;
+	padding: 0;
+	width: 0;
+}
+
+#torrentTable,
+#torrentOverviewTable,
+#torrentFilesTree,
+#torrentAddFilesTree,
+#torrentTrackersTable,
+#torrentPeersTable,
+#torrentLogsTable {
+	background: #202124;
+	alternate-background-color: #26282c;
+	color: #dddddd;
+	border: 1px solid #3b3d40;
+	border-radius: 5px;
+	font-size: 12px;
+	gridline-color: #3b3d40;
+}
+
+#torrentTable::item,
+#torrentOverviewTable::item,
+#torrentFilesTree::item,
+#torrentAddFilesTree::item,
+#torrentTrackersTable::item,
+#torrentPeersTable::item,
+#torrentLogsTable::item {
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+#torrentTable::item:selected,
+#torrentOverviewTable::item:selected,
+#torrentFilesTree::item:selected,
+#torrentAddFilesTree::item:selected,
+#torrentTrackersTable::item:selected,
+#torrentPeersTable::item:selected,
+#torrentLogsTable::item:selected {
+	background: #387780;
+	color: #ffffff;
+}
+
+QHeaderView#torrentHeader,
+QTableCornerButton::section {
+	background: #2f3136;
+	color: #dddddd;
+	border: 0px;
+}
+
+QHeaderView#torrentHeader::section,
+QTableWidget#torrentTable QHeaderView::section,
+QTableWidget#torrentOverviewTable QHeaderView::section,
+QTreeWidget#torrentFilesTree QHeaderView::section,
+QTreeWidget#torrentAddFilesTree QHeaderView::section,
+QTableWidget#torrentTrackersTable QHeaderView::section,
+QTableWidget#torrentPeersTable QHeaderView::section,
+QTableWidget#torrentLogsTable QHeaderView::section {
+	background: #2f3136;
+	color: #dddddd;
+	font-size: 12px;
+	font-family: "Segoe UI";
+	font-weight: 600;
+	padding: 1px 6px;
+	min-height: 18px;
+	border: 0px;
+	border-right: 1px solid #3b3d40;
+	border-bottom: 1px solid #3b3d40;
+}
+
+QHeaderView#torrentHeader::section:pressed,
+QHeaderView#torrentHeader::section:checked {
+	background: #363941;
+	color: #ffffff;
+}
+
+QTableWidget#torrentTable QScrollBar:horizontal,
+QTableWidget#torrentOverviewTable QScrollBar:horizontal,
+QTableWidget#torrentTrackersTable QScrollBar:horizontal,
+QTableWidget#torrentPeersTable QScrollBar:horizontal,
+QTableWidget#torrentLogsTable QScrollBar:horizontal,
+QTreeWidget#torrentFilesTree QScrollBar:horizontal,
+QTreeWidget#torrentAddFilesTree QScrollBar:horizontal,
+QScrollArea#torrentOverviewScroll QScrollBar:horizontal {
+	background: #202124;
+	height: 8px;
+	margin: 0px;
+}
+
+QTableWidget#torrentTable QScrollBar:vertical,
+QTableWidget#torrentOverviewTable QScrollBar:vertical,
+QTableWidget#torrentTrackersTable QScrollBar:vertical,
+QTableWidget#torrentPeersTable QScrollBar:vertical,
+QTableWidget#torrentLogsTable QScrollBar:vertical,
+QTreeWidget#torrentFilesTree QScrollBar:vertical,
+QTreeWidget#torrentAddFilesTree QScrollBar:vertical,
+QScrollArea#torrentOverviewScroll QScrollBar:vertical {
+	background: #202124;
+	width: 8px;
+	margin: 0px;
+}
+
+QTableWidget#torrentTable QScrollBar::handle,
+QTableWidget#torrentOverviewTable QScrollBar::handle,
+QTableWidget#torrentTrackersTable QScrollBar::handle,
+QTableWidget#torrentPeersTable QScrollBar::handle,
+QTableWidget#torrentLogsTable QScrollBar::handle,
+QTreeWidget#torrentFilesTree QScrollBar::handle,
+QTreeWidget#torrentAddFilesTree QScrollBar::handle,
+QScrollArea#torrentOverviewScroll QScrollBar::handle {
+	background: #3b3d40;
+	border-radius: 3px;
+	min-height: 18px;
+	min-width: 18px;
+}
+
+QTableWidget#torrentTable QScrollBar::add-line,
+QTableWidget#torrentTable QScrollBar::sub-line,
+QTableWidget#torrentOverviewTable QScrollBar::add-line,
+QTableWidget#torrentOverviewTable QScrollBar::sub-line,
+QTableWidget#torrentTrackersTable QScrollBar::add-line,
+QTableWidget#torrentTrackersTable QScrollBar::sub-line,
+QTableWidget#torrentPeersTable QScrollBar::add-line,
+QTableWidget#torrentPeersTable QScrollBar::sub-line,
+QTableWidget#torrentLogsTable QScrollBar::add-line,
+QTableWidget#torrentLogsTable QScrollBar::sub-line,
+QTreeWidget#torrentFilesTree QScrollBar::add-line,
+QTreeWidget#torrentFilesTree QScrollBar::sub-line,
+QTreeWidget#torrentAddFilesTree QScrollBar::add-line,
+QTreeWidget#torrentAddFilesTree QScrollBar::sub-line,
+QScrollArea#torrentOverviewScroll QScrollBar::add-line,
+QScrollArea#torrentOverviewScroll QScrollBar::sub-line {
+	width: 0px;
+	height: 0px;
+}
+
+QTableWidget#torrentTable QScrollBar::add-page,
+QTableWidget#torrentTable QScrollBar::sub-page,
+QTableWidget#torrentOverviewTable QScrollBar::add-page,
+QTableWidget#torrentOverviewTable QScrollBar::sub-page,
+QTableWidget#torrentTrackersTable QScrollBar::add-page,
+QTableWidget#torrentTrackersTable QScrollBar::sub-page,
+QTableWidget#torrentPeersTable QScrollBar::add-page,
+QTableWidget#torrentPeersTable QScrollBar::sub-page,
+QTableWidget#torrentLogsTable QScrollBar::add-page,
+QTableWidget#torrentLogsTable QScrollBar::sub-page,
+QTreeWidget#torrentFilesTree QScrollBar::add-page,
+QTreeWidget#torrentFilesTree QScrollBar::sub-page,
+QTreeWidget#torrentAddFilesTree QScrollBar::add-page,
+QTreeWidget#torrentAddFilesTree QScrollBar::sub-page,
+QScrollArea#torrentOverviewScroll QScrollBar::add-page,
+QScrollArea#torrentOverviewScroll QScrollBar::sub-page {
+	background: #202124;
+}
+
+#torrentDetailTabs::pane {
+	border: 1px solid #3b3d40;
+	background: #232528;
+	border-radius: 5px;
+}
+
+#torrentDetailTabs QTabBar::tab {
+	background: #1f2023;
+	color: #dddddd;
+	font-size: 12px;
+	padding: 3px 9px;
+	min-height: 20px;
+	margin-right: 3px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#torrentDetailTabs QTabBar::tab:selected {
+	background: #387780;
+	color: #ffffff;
+}
+
+#torrentRowProgress,
+#torrentOverviewProgress,
+#torrentMetadataProgress {
+	background: #1a1b1e;
+	color: #dddddd;
+	border: 1px solid #3b3d40;
+	border-radius: 4px;
+	font-size: 11px;
+	text-align: center;
+}
+
+#torrentRowProgress::chunk,
+#torrentOverviewProgress::chunk,
+#torrentMetadataProgress::chunk {
+	background: #a7b308;
+	border-radius: 3px;
+}
+
+#torrentInfoSection,
+#torrentAddSection {
+	background: #2b2d30;
+	border: 1px solid #3b3d40;
+	border-radius: 6px;
+}
+
+#torrentInfoLabel,
+#torrentInfoValue,
+#torrentAddInfoLabel,
+#torrentAddInfoValue,
+#torrentAddStatusLabel,
+#torrentAddCheck {
+	color: #dddddd;
+	font-size: 12px;
+}
+
+#torrentInfoLabel,
+#torrentAddInfoLabel {
+	font-weight: 400;
+}
+
+#torrentAddTitle {
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+#torrentAddCloseBtn,
+#torrentAddBrowseBtn {
+	background: #1f2023;
+	border-radius: 5px;
+	min-width: 28px;
+	min-height: 28px;
+}
+
+#torrentAddCloseBtn:hover {
+	background: #dd0000;
+}
+
+#torrentPrimaryButton {
+	background: #387780;
+	color: #ffffff;
+	font-size: 13px;
+	padding: 5px 14px;
+	border-radius: 5px;
+}
+
+#torrentPrimaryButton:hover {
+	background: #439099;
+}
+
+#torrentSecondaryButton,
+#torrentMiniButton {
+	background: #1f2023;
+	color: #dddddd;
+	border: 1px solid #3b3d40;
+	font-size: 12px;
+	padding: 4px 9px;
+	border-radius: 5px;
+}
 """
 
 styles_retro = """
@@ -2162,5 +2536,379 @@ QMenu::separator {
 #mediaRightSideControlFrames QSlider::add-page:horizontal {
 	background: #fff7e7;
 	border: 1px solid #d8a06c;
+}
+
+#torrentManagerWidget,
+#torrentRightPane,
+#torrentAddDialog,
+#torrentMagnetDialog {
+	background: #f6d7a8;
+}
+
+#torrentToolbar,
+#torrentSidebar,
+#torrentAddHeader,
+#torrentAddFooter,
+#torrentAddOptionsPane,
+#torrentAddFilesPane,
+#torrentFilesTab,
+#torrentOverviewTab {
+	background: #f6d7a8;
+}
+
+QSplitter#torrentMainSplitter::handle,
+QSplitter#torrentAddSplitter::handle {
+	background: #f6d7a8;
+	border: 0px;
+	width: 4px;
+}
+
+QSplitter#torrentDetailSplitter::handle {
+	background: #f6d7a8;
+	border-top: 2px solid #d8a06c;
+	border-bottom: 1px solid #efc58d;
+	height: 6px;
+}
+
+QSplitter#torrentDetailSplitter::handle:hover {
+	border-top: 2px solid #b07542;
+}
+
+#torrentSidebar {
+	border-right: 1px solid #d8a06c;
+	border-radius: 6px;
+}
+
+#torrentSidebarTitle,
+#torrentAddSectionTitle,
+#torrentSectionTitle {
+	color: #7b3f10;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+#torrentSidebarButton {
+	color: #080808;
+	text-align: left;
+	font-size: 12px;
+	padding: 4px 6px;
+	border-radius: 4px;
+}
+
+#torrentSidebarButton[active="true"],
+#torrentSidebarButton:checked {
+	background: #b07542;
+	color: #ffffff;
+	font-weight: 600;
+}
+
+#torrentSidebarButton:hover,
+#torrentToolButton:hover,
+#torrentMiniButton:hover,
+#torrentSecondaryButton:hover {
+	background: #efc58d;
+}
+
+#torrentSidebarButton:pressed,
+#torrentToolButton:pressed,
+#torrentMiniButton:pressed,
+#torrentSecondaryButton:pressed {
+	background: #b07542;
+}
+
+#torrentToolButton {
+	background: #fff7e7;
+	border: 1px solid #d8a06c;
+	border-radius: 5px;
+	min-width: 30px;
+	min-height: 28px;
+}
+
+#torrentFilterInput,
+#torrentAddPathInput {
+	background: #fff7e7;
+	color: #080808;
+	border: 1px solid #d8a06c;
+	border-radius: 4px;
+	font-size: 12px;
+	padding: 4px 8px;
+}
+
+#torrentFilterCombo {
+	min-width: 76px;
+	text-align: center;
+	padding-left: 4px;
+	padding-right: 4px;
+	color: #080808;
+	background: #ffc49b;
+	font-family: "Segoe UI";
+	font-size: 14px;
+	border: none;
+	border-radius: 2px;
+}
+
+#torrentFilterCombo QAbstractItemView {
+	color: white;
+	background-color: #878389;
+	selection-background-color: #105758;
+	border: none;
+}
+
+#torrentFilterCombo::drop-down:button {
+	border: none;
+	padding: 0;
+	width: 0;
+}
+
+#torrentTable,
+#torrentOverviewTable,
+#torrentFilesTree,
+#torrentAddFilesTree,
+#torrentTrackersTable,
+#torrentPeersTable,
+#torrentLogsTable {
+	background: #fff7e7;
+	alternate-background-color: #f6e5c9;
+	color: #080808;
+	border: 1px solid #d8a06c;
+	border-radius: 5px;
+	font-size: 12px;
+	gridline-color: #d8a06c;
+}
+
+#torrentTable::item,
+#torrentOverviewTable::item,
+#torrentFilesTree::item,
+#torrentAddFilesTree::item,
+#torrentTrackersTable::item,
+#torrentPeersTable::item,
+#torrentLogsTable::item {
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+#torrentTable::item:selected,
+#torrentOverviewTable::item:selected,
+#torrentFilesTree::item:selected,
+#torrentAddFilesTree::item:selected,
+#torrentTrackersTable::item:selected,
+#torrentPeersTable::item:selected,
+#torrentLogsTable::item:selected {
+	background: #b07542;
+	color: #ffffff;
+}
+
+QHeaderView#torrentHeader,
+QTableCornerButton::section {
+	background: #efc58d;
+	color: #080808;
+	border: 0px;
+}
+
+QHeaderView#torrentHeader::section,
+QTableWidget#torrentTable QHeaderView::section,
+QTableWidget#torrentOverviewTable QHeaderView::section,
+QTreeWidget#torrentFilesTree QHeaderView::section,
+QTreeWidget#torrentAddFilesTree QHeaderView::section,
+QTableWidget#torrentTrackersTable QHeaderView::section,
+QTableWidget#torrentPeersTable QHeaderView::section,
+QTableWidget#torrentLogsTable QHeaderView::section {
+	background: #efc58d;
+	color: #080808;
+	font-size: 12px;
+	font-family: "Segoe UI";
+	font-weight: 600;
+	padding: 1px 6px;
+	min-height: 18px;
+	border: 0px;
+	border-right: 1px solid #d8a06c;
+	border-bottom: 1px solid #d8a06c;
+}
+
+QHeaderView#torrentHeader::section:pressed,
+QHeaderView#torrentHeader::section:checked {
+	background: #e2b276;
+	color: #080808;
+}
+
+QTableWidget#torrentTable QScrollBar:horizontal,
+QTableWidget#torrentOverviewTable QScrollBar:horizontal,
+QTableWidget#torrentTrackersTable QScrollBar:horizontal,
+QTableWidget#torrentPeersTable QScrollBar:horizontal,
+QTableWidget#torrentLogsTable QScrollBar:horizontal,
+QTreeWidget#torrentFilesTree QScrollBar:horizontal,
+QTreeWidget#torrentAddFilesTree QScrollBar:horizontal,
+QScrollArea#torrentOverviewScroll QScrollBar:horizontal {
+	background: #fff7e7;
+	height: 8px;
+	margin: 0px;
+}
+
+QTableWidget#torrentTable QScrollBar:vertical,
+QTableWidget#torrentOverviewTable QScrollBar:vertical,
+QTableWidget#torrentTrackersTable QScrollBar:vertical,
+QTableWidget#torrentPeersTable QScrollBar:vertical,
+QTableWidget#torrentLogsTable QScrollBar:vertical,
+QTreeWidget#torrentFilesTree QScrollBar:vertical,
+QTreeWidget#torrentAddFilesTree QScrollBar:vertical,
+QScrollArea#torrentOverviewScroll QScrollBar:vertical {
+	background: #fff7e7;
+	width: 8px;
+	margin: 0px;
+}
+
+QTableWidget#torrentTable QScrollBar::handle,
+QTableWidget#torrentOverviewTable QScrollBar::handle,
+QTableWidget#torrentTrackersTable QScrollBar::handle,
+QTableWidget#torrentPeersTable QScrollBar::handle,
+QTableWidget#torrentLogsTable QScrollBar::handle,
+QTreeWidget#torrentFilesTree QScrollBar::handle,
+QTreeWidget#torrentAddFilesTree QScrollBar::handle,
+QScrollArea#torrentOverviewScroll QScrollBar::handle {
+	background: #d8a06c;
+	border-radius: 3px;
+	min-height: 18px;
+	min-width: 18px;
+}
+
+QTableWidget#torrentTable QScrollBar::add-line,
+QTableWidget#torrentTable QScrollBar::sub-line,
+QTableWidget#torrentOverviewTable QScrollBar::add-line,
+QTableWidget#torrentOverviewTable QScrollBar::sub-line,
+QTableWidget#torrentTrackersTable QScrollBar::add-line,
+QTableWidget#torrentTrackersTable QScrollBar::sub-line,
+QTableWidget#torrentPeersTable QScrollBar::add-line,
+QTableWidget#torrentPeersTable QScrollBar::sub-line,
+QTableWidget#torrentLogsTable QScrollBar::add-line,
+QTableWidget#torrentLogsTable QScrollBar::sub-line,
+QTreeWidget#torrentFilesTree QScrollBar::add-line,
+QTreeWidget#torrentFilesTree QScrollBar::sub-line,
+QTreeWidget#torrentAddFilesTree QScrollBar::add-line,
+QTreeWidget#torrentAddFilesTree QScrollBar::sub-line,
+QScrollArea#torrentOverviewScroll QScrollBar::add-line,
+QScrollArea#torrentOverviewScroll QScrollBar::sub-line {
+	width: 0px;
+	height: 0px;
+}
+
+QTableWidget#torrentTable QScrollBar::add-page,
+QTableWidget#torrentTable QScrollBar::sub-page,
+QTableWidget#torrentOverviewTable QScrollBar::add-page,
+QTableWidget#torrentOverviewTable QScrollBar::sub-page,
+QTableWidget#torrentTrackersTable QScrollBar::add-page,
+QTableWidget#torrentTrackersTable QScrollBar::sub-page,
+QTableWidget#torrentPeersTable QScrollBar::add-page,
+QTableWidget#torrentPeersTable QScrollBar::sub-page,
+QTableWidget#torrentLogsTable QScrollBar::add-page,
+QTableWidget#torrentLogsTable QScrollBar::sub-page,
+QTreeWidget#torrentFilesTree QScrollBar::add-page,
+QTreeWidget#torrentFilesTree QScrollBar::sub-page,
+QTreeWidget#torrentAddFilesTree QScrollBar::add-page,
+QTreeWidget#torrentAddFilesTree QScrollBar::sub-page,
+QScrollArea#torrentOverviewScroll QScrollBar::add-page,
+QScrollArea#torrentOverviewScroll QScrollBar::sub-page {
+	background: #fff7e7;
+}
+
+#torrentDetailTabs::pane {
+	border: 1px solid #d8a06c;
+	background: #f7efe3;
+	border-radius: 5px;
+}
+
+#torrentDetailTabs QTabBar::tab {
+	background: #fff7e7;
+	color: #080808;
+	font-size: 12px;
+	padding: 3px 9px;
+	min-height: 20px;
+	margin-right: 3px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#torrentDetailTabs QTabBar::tab:selected {
+	background: #b07542;
+	color: #ffffff;
+}
+
+#torrentRowProgress,
+#torrentOverviewProgress,
+#torrentMetadataProgress {
+	background: #fff7e7;
+	color: #080808;
+	border: 1px solid #d8a06c;
+	border-radius: 4px;
+	font-size: 11px;
+	text-align: center;
+}
+
+#torrentRowProgress::chunk,
+#torrentOverviewProgress::chunk,
+#torrentMetadataProgress::chunk {
+	background: #037971;
+	border-radius: 3px;
+}
+
+#torrentInfoSection,
+#torrentAddSection {
+	background: #fff7e7;
+	border: 1px solid #d8a06c;
+	border-radius: 6px;
+}
+
+#torrentInfoLabel,
+#torrentInfoValue,
+#torrentAddInfoLabel,
+#torrentAddInfoValue,
+#torrentAddStatusLabel,
+#torrentAddCheck {
+	color: #080808;
+	font-size: 12px;
+}
+
+#torrentInfoLabel,
+#torrentAddInfoLabel {
+	font-weight: 400;
+}
+
+#torrentAddTitle {
+	color: #080808;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+#torrentAddCloseBtn,
+#torrentAddBrowseBtn {
+	background: #fff7e7;
+	border-radius: 5px;
+	min-width: 28px;
+	min-height: 28px;
+}
+
+#torrentAddCloseBtn:hover {
+	background: #cc3d2f;
+}
+
+#torrentPrimaryButton {
+	background: #037971;
+	color: #ffffff;
+	font-size: 13px;
+	padding: 5px 14px;
+	border-radius: 5px;
+}
+
+#torrentPrimaryButton:hover {
+	background: #0b8c83;
+}
+
+#torrentSecondaryButton,
+#torrentMiniButton {
+	background: #fff7e7;
+	color: #080808;
+	border: 1px solid #d8a06c;
+	font-size: 12px;
+	padding: 4px 9px;
+	border-radius: 5px;
 }
 """

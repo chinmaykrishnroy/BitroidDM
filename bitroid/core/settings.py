@@ -17,6 +17,20 @@ DEFAULT_SETTINGS = {
         "shuffle": False,
         "visible": True,
     },
+    "torrent": {
+        "download_dir": str(Path.home() / "Downloads"),
+        "poll_interval_ms": 1000,
+        "active_filter": "all",
+        "total_downloaded_bytes": 0,
+        "enable_dht": True,
+        "enable_lsd": True,
+        "enable_upnp": True,
+        "enable_natpmp": True,
+        "listen_interfaces": "0.0.0.0:6881,[::]:6881",
+    },
+    "appearance": {
+        "theme": "dark",
+    },
 }
 
 
