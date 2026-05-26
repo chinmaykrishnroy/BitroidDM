@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+
+venv/
+.venv/
+
+*.log
+history.bin
+history.json
+favourites.json
+searchhistory.json
+
+dev/libtorrent_lab/sandbox/
+dev/libtorrent_lab/live_report*.json
