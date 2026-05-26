@@ -39,6 +39,16 @@ QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
     border-radius: 2px;
 }
 
+QToolTip {
+	color: #f4f4f4;
+	background-color: #2b2d30;
+	border: 1px solid #3b3d40;
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 12px;
+	font-family: "Segoe UI";
+}
+
 QScrollBar::add-line, QScrollBar::sub-line {
     background: transparent;
 }
@@ -1473,6 +1483,16 @@ QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
 QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
     background: #c44900;
     border-radius: 2px;
+}
+
+QToolTip {
+	color: #080808;
+	background-color: #ffc49b;
+	border: 1px solid #b07542;
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 12px;
+	font-family: "Segoe UI";
 }
 
 QScrollBar::add-line, QScrollBar::sub-line {

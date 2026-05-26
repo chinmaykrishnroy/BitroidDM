@@ -85,6 +85,58 @@ class ElidedLabel(QLabel):
         self.updateElidedText()
 
 
+class ScrollingLabel(QLabel):
+    def __init__(self, text="", parent=None):
+        super().__init__(parent)
+        self._full_text = ""
+        self._scroll_offset = 0
+        self._scroll_padding = "    "
+        self._scroll_timer = QTimer(self)
+        self._scroll_timer.setInterval(150)
+        self._scroll_timer.timeout.connect(self.advanceScroll)
+        self.setText(text)
+
+    def setText(self, text):
+        self._full_text = str(text)
+        self._scroll_offset = 0
+        self.setToolTip(self._full_text)
+        self.renderText()
+
+    def text(self):
+        return self._full_text
+
+    def renderText(self):
+        if not self._full_text:
+            self._scroll_timer.stop()
+            QLabel.setText(self, "")
+            return
+
+        available_width = max(0, self.width() - 12)
+        if available_width <= 0 or self.fontMetrics().horizontalAdvance(self._full_text) <= available_width:
+            self._scroll_timer.stop()
+            QLabel.setText(self, self._full_text)
+            return
+
+        stream = self._full_text + self._scroll_padding
+        char_width = max(self.fontMetrics().averageCharWidth(), 1)
+        visible_chars = max(1, int(available_width / char_width))
+        offset = self._scroll_offset % len(stream)
+        repeated = stream * ((visible_chars // len(stream)) + 3)
+        QLabel.setText(self, repeated[offset:offset + visible_chars])
+        if not self._scroll_timer.isActive():
+            self._scroll_timer.start()
+
+    def advanceScroll(self):
+        if not self._full_text:
+            return
+        self._scroll_offset = (self._scroll_offset + 1) % len(self._full_text + self._scroll_padding)
+        self.renderText()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.renderText()
+
+
 class TorrentPieceMap(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -536,6 +588,7 @@ class MainWindow(QMainWindow):
         self.sidebar_visible = True
         self.mediaplayer_visible = True
         self.ui.setupUi(self)
+        self.installFooterLogScroller()
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowIcon(QIcon(u":/icons/icons/activity.svg"))
         self.setMouseTracking(True)
@@ -584,6 +637,7 @@ class MainWindow(QMainWindow):
         self.media_shuffle = bool(self.settings.get("media_player", "shuffle", False))
         self.player_locked = False
         self._updating_media_slider = False
+        self._media_slider_scrubbing = False
         self.download_items = []
         self.download_engine = None
         self.torrent_state_dir = self.data_dir / "torrent_state"
@@ -598,6 +652,7 @@ class MainWindow(QMainWindow):
         self._updating_torrent_details = False
         self._last_detail_refresh = {}
         self._last_resume_export = 0.0
+        self._torrent_notification_events = set()
         self.default_download_dir = Path(self.settings.get("torrent", "download_dir", str(Path.home() / "Downloads"))).expanduser()
 
         self.initNetworkMonitor()
@@ -676,6 +731,8 @@ class MainWindow(QMainWindow):
         self.ui.settingsBtn.clicked.connect(lambda: self.ui.mainStack.setCurrentIndex(5))
         self.ui.helpMenuBtn.clicked.connect(self.showHelp)
         self.ui.mediaPlayerShowBtn.clicked.connect(self.toggleMediaPlayer)
+        self.ui.appResetBtn.setToolTip("Reload Bitroid services")
+        self.ui.mediaProgressSlider.setToolTip("Drag to preview, release to seek")
         self.ui.filesReloadBtn.clicked.connect(self.reloadFiles)
         self.ui.filesBackBtn.clicked.connect(self.goBackDirectory)
         self.ui.filesForwardBtn.clicked.connect(self.goForwardDirectory)
@@ -686,6 +743,7 @@ class MainWindow(QMainWindow):
         self.ui.notificationBtn.clicked.connect(
             lambda: self.pushNotification("Hello"))
         self.ui.closeNotificationBtn.clicked.connect(self.hideNotificationTab)
+        self.ui.appResetBtn.clicked.connect(self.reloadAppServices)
         self.ui.searchBtn.clicked.connect(self.searchTorrents)
         self.ui.qSettingNsfwBtn.clicked.connect(self.toggleNsfw)
         self.updateNsfwButton()
@@ -711,6 +769,22 @@ class MainWindow(QMainWindow):
     def updateNsfwButton(self):
         self.ui.qSettingNsfwBtn.setText("Enabled" if self.include_nsfw else "Disabled")
 
+    def installFooterLogScroller(self):
+        old_label = self.ui.logLabel
+        new_label = ScrollingLabel(old_label.text(), old_label.parent())
+        new_label.setObjectName(old_label.objectName())
+        new_label.setSizePolicy(old_label.sizePolicy())
+        new_label.setMinimumSize(old_label.minimumSize())
+        new_label.setMaximumSize(old_label.maximumSize())
+        new_label.setFont(old_label.font())
+        new_label.setTextFormat(old_label.textFormat())
+        new_label.setAlignment(old_label.alignment())
+        new_label.setWordWrap(False)
+        self.ui.horizontalLayout_10.replaceWidget(old_label, new_label)
+        old_label.setParent(None)
+        old_label.deleteLater()
+        self.ui.logLabel = new_label
+
     def themedIcon(self, icon_path, size=18):
         icon = QIcon(icon_path)
         if self.dark_theme:
@@ -730,6 +804,7 @@ class MainWindow(QMainWindow):
     def setThemedButtonIcon(self, button, icon_path, size=None):
         button.setProperty("iconPath", icon_path)
         icon_size = size or max(button.iconSize().width(), button.iconSize().height(), 18)
+        button.setIconSize(QSize(icon_size, icon_size))
         button.setIcon(self.themedIcon(icon_path, icon_size))
 
     def updateThemedIcons(self):
@@ -749,6 +824,8 @@ class MainWindow(QMainWindow):
         )
         for button, icon_path, size in media_icons:
             self.setThemedButtonIcon(button, icon_path, size)
+        if hasattr(self.ui, "appResetBtn"):
+            self.setThemedButtonIcon(self.ui.appResetBtn, ":/icons/icons/cil-reload.png", 14)
         self.updateMediaRepeatIcon()
         self.updateMediaShuffleIcon()
         self.updateMediaMuteIcon()
@@ -1557,6 +1634,12 @@ class MainWindow(QMainWindow):
         payload["error"] = status.get("error", "")
         if status.get("is_finished") and payload.get("completed_on") == "-":
             payload["completed_on"] = self.timeNow()
+            self.notifyTorrentEvent(
+                torrent_id,
+                "finished",
+                "Torrent Downloaded",
+                f"{payload.get('name', 'Torrent')} is complete.",
+            )
         self.refreshTorrentRow(row, payload)
         self.filterDownloadRows()
 
@@ -1616,8 +1699,42 @@ class MainWindow(QMainWindow):
 
         message = payload.get("message") or event.replace("_", " ").title()
         self.appendTorrentLog(torrent_id, event, message)
+        self.notifyTorrentAlert(torrent_id, event, message)
         if event in {"metadata_received", "finished", "paused", "resumed", "checked", "storage_moved", "file_priority_changed", "resume_data_ready"}:
             self.scheduleTorrentStateSave()
+
+    def notifyTorrentAlert(self, torrent_id, event, message):
+        titles = {
+            "metadata_received": "Torrent Metadata Ready",
+            "finished": "Torrent Downloaded",
+            "checked": "Torrent Checked",
+            "storage_moved": "Torrent Moved",
+            "error": "Torrent Error",
+            "metadata_failed": "Metadata Failed",
+            "resume_data_failed": "Torrent State Warning",
+            "storage_move_failed": "Move Failed",
+            "tracker_error": "Tracker Warning",
+        }
+        title = titles.get(event)
+        if not title:
+            return
+        row = self.torrent_row_by_id.get(torrent_id, -1)
+        payload = self._downloadPayloadForRow(row) or {}
+        name = payload.get("name") or payload.get("torrent_id") or "Torrent"
+        if event == "finished":
+            message = f"{name} is complete."
+        elif event == "metadata_received":
+            message = f"{name} is ready to download."
+        else:
+            message = str(message)
+        self.notifyTorrentEvent(torrent_id, event, title, message)
+
+    def notifyTorrentEvent(self, torrent_id, event, title, message):
+        key = (str(torrent_id), str(event))
+        if key in self._torrent_notification_events:
+            return
+        self._torrent_notification_events.add(key)
+        self.pushNotification(message, title)
 
     def appendTorrentLog(self, torrent_id, event, message):
         rows = self.torrent_logs_by_id.setdefault(torrent_id, [])
@@ -1750,6 +1867,7 @@ class MainWindow(QMainWindow):
                 self.populateTorrentDetails(payload)
                 self.updateDownloadSidebarCounts()
                 self.scheduleTorrentStateSave()
+                self.pushNotification(f"{payload.get('name', 'Torrent')} paused.", "Torrent Paused")
         except Exception as error:
             self.pushNotification(str(error), "Pause Failed")
 
@@ -1767,6 +1885,7 @@ class MainWindow(QMainWindow):
                 self.populateTorrentDetails(payload)
                 self.updateDownloadSidebarCounts()
                 self.scheduleTorrentStateSave()
+                self.pushNotification(f"{payload.get('name', 'Torrent')} resumed.", "Torrent Resumed")
             if not self.torrent_poll_timer.isActive():
                 self.torrent_poll_timer.start()
         except Exception as error:
@@ -1800,6 +1919,7 @@ class MainWindow(QMainWindow):
                 self.appendTorrentLog(torrent_id, "pause_failed", str(error))
         self.updateDownloadSidebarCounts()
         self.scheduleTorrentStateSave()
+        self.pushNotification("All torrents are paused.", "Torrent Paused")
 
     def resumeAllTorrents(self):
         if self.download_engine is None:
@@ -1819,6 +1939,7 @@ class MainWindow(QMainWindow):
             self.torrent_poll_timer.start()
         self.updateDownloadSidebarCounts()
         self.scheduleTorrentStateSave()
+        self.pushNotification("All torrents are resuming.", "Torrent Resumed")
 
     def removeSelectedTorrent(self):
         torrent_id = self.selectedTorrentId()
@@ -1846,6 +1967,7 @@ class MainWindow(QMainWindow):
         else:
             self.showEmptyTorrentDetails()
         self.saveTorrentState()
+        self.pushNotification("Torrent removed from Bitroid.", "Torrent Removed")
 
     def rebuildTorrentRowIndex(self):
         self.torrent_row_by_id.clear()
@@ -1867,6 +1989,7 @@ class MainWindow(QMainWindow):
             payload["save_path"] = directory
             self.populateTorrentDetails(payload)
             self.scheduleTorrentStateSave()
+            self.pushNotification("Torrent destination updated.", "Torrent Moved")
         except Exception as error:
             self.pushNotification(str(error), "Move Failed")
 
@@ -1882,6 +2005,7 @@ class MainWindow(QMainWindow):
         self.refreshTorrentRow(row, payload)
         self.populateTorrentDetails(payload)
         self.scheduleTorrentStateSave()
+        self.pushNotification(f"Renamed to {payload['name']}.", "Torrent Renamed")
 
     def setSelectedTorrentSequential(self, enabled):
         payload = self.selectedTorrentPayload()
@@ -1901,6 +2025,7 @@ class MainWindow(QMainWindow):
             return
         try:
             self.download_engine.force_recheck(torrent_id)
+            self.pushNotification("Torrent recheck requested.", "Torrent Recheck")
         except Exception as error:
             self.pushNotification(str(error), "Recheck Failed")
 
@@ -1910,6 +2035,7 @@ class MainWindow(QMainWindow):
             return
         try:
             self.download_engine.request_resume_data(torrent_id)
+            self.pushNotification("Resume data save requested.", "Torrent State")
         except Exception as error:
             self.pushNotification(str(error), "Resume Data Failed")
 
@@ -3280,7 +3406,9 @@ class MainWindow(QMainWindow):
         self.ui.mediaFolderBtn.clicked.connect(self.chooseMediaFolder)
         self.ui.playerUndockBtn.clicked.connect(lambda: self.pushNotification("Undocked video will be added after the embedded player is stable.", "Media Player"))
         self.ui.mediaVolumeSlider.valueChanged.connect(self.changeMediaVolume)
-        self.ui.mediaProgressSlider.sliderMoved.connect(self.seekMediaTo)
+        self.ui.mediaProgressSlider.sliderPressed.connect(self.beginMediaSeek)
+        self.ui.mediaProgressSlider.sliderMoved.connect(self.previewMediaSeek)
+        self.ui.mediaProgressSlider.sliderReleased.connect(self.commitMediaSeek)
         self.ui.playbackSpeedCombobox.currentTextChanged.connect(self.changePlaybackRate)
 
         self.media_player.positionChanged.connect(self.updateMediaPosition)
@@ -3395,6 +3523,21 @@ class MainWindow(QMainWindow):
     def seekMediaTo(self, position):
         self.media_player.setPosition(int(position))
 
+    def beginMediaSeek(self):
+        self._media_slider_scrubbing = True
+
+    def previewMediaSeek(self, position):
+        position = int(position)
+        self.ui.currentPlayingBtn.setText(self.format_time(position))
+        remaining = max(self.media_duration - position, 0)
+        self.ui.remainingMediaBtn.setText(f"-{self.format_time(remaining)}")
+
+    def commitMediaSeek(self):
+        position = int(self.ui.mediaProgressSlider.value())
+        self._media_slider_scrubbing = False
+        self.seekMediaTo(position)
+        self.previewMediaSeek(position)
+
     def changeMediaVolume(self, value):
         self.audio_output.setVolume(value / 100)
         if value > 0 and self.audio_output.isMuted():
@@ -3472,12 +3615,12 @@ class MainWindow(QMainWindow):
         self.ui.remainingMediaBtn.setText(f"-{self.format_time(self.media_duration)}")
 
     def updateMediaPosition(self, position):
+        if self._media_slider_scrubbing:
+            return
         self._updating_media_slider = True
         self.ui.mediaProgressSlider.setValue(position)
         self._updating_media_slider = False
-        self.ui.currentPlayingBtn.setText(self.format_time(position))
-        remaining = max(self.media_duration - position, 0)
-        self.ui.remainingMediaBtn.setText(f"-{self.format_time(remaining)}")
+        self.previewMediaSeek(position)
 
     def updateMediaPlaybackState(self, state):
         is_playing = state == QMediaPlayer.PlaybackState.PlayingState
@@ -3936,6 +4079,33 @@ class MainWindow(QMainWindow):
             self.search_thread.stop()
             self.torrent_engine_active = False
         self.initSearchThread()
+
+    def reloadAppServices(self):
+        refreshed = []
+        if self.torrent_engine_active and hasattr(self, "search_thread") and self.search_thread.isRunning():
+            self.pushNotification("Search is running, so the search worker was left alone.", "Reload")
+        else:
+            if self.torrent_engine_active and hasattr(self, "search_thread"):
+                self.search_thread.stop()
+                self.torrent_engine_active = False
+            self.initSearchThread()
+            refreshed.append("search")
+
+        self.loadDirectory(self.current_directory, remember=False)
+        refreshed.append("files")
+
+        if self.download_engine is not None:
+            if self.torrent_row_by_id and not self.torrent_poll_timer.isActive():
+                self.torrent_poll_timer.start()
+            self.pollTorrentEngine()
+            refreshed.append("torrent")
+
+        self.favorite_torrents.load_favorites()
+        self.history_thread.load_history()
+        refreshed.extend(("favorites", "history"))
+        self.network_monitor.set_app_network_rates(0, 0)
+        self.temporaryLog("Bitroid services refreshed.", 2500)
+        self.pushNotification(f"Refreshed {', '.join(refreshed)}.", "Bitroid Reload")
 
     def createResultTile(self, result, parent_widget, layout):
         searchOutputFrame = QFrame(parent_widget)
